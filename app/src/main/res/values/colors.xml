@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="bgBottomTabs">#403e3c</color>
+    <color name="bgSecondary">#484742</color>
+    <color name="btnColor">#393733</color>
+    <color name="bgPrimary">#383631</color>
+    <color name="bgToolbar">#504f4b</color>
+    <color name="toolbarText">#89996c</color>
+    <color name="bgFurnace">#5d5f5c</color>
+    <color name="bgBottomNavBar">#626362</color>
+    <color name="pickItem">#da543f</color>
+    <color name="bgBtn">#cd5846</color>
+</resources>

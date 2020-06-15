@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="120dp"
+        android:layout_height="160dp"
+        android:background="@color/toolbarText"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/weaponImage"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:src="@drawable/beancan_grenade_image"/>
+
+        <TextView
+            android:id="@+id/weaponValue"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:textColor="@android:color/white"
+            android:textSize="22sp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="10dp"
+            tools:text="6"/>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

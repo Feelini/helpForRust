@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "23703470135",
+    "firebase_url": "https://helpforrust.firebaseio.com",
+    "project_id": "helpforrust",
+    "storage_bucket": "helpforrust.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:23703470135:android:c43ad40e51825a3e63ffb2",
+        "android_client_info": {
+          "package_name": "ru.dorofeev.helpforrust"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "23703470135-nq554pmhp3ql9nvaqn4sfnfjtdqkg43k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.dorofeev.helpforrust",
+            "certificate_hash": "cd9074120846c8f810e9b9bc325b89d2edbbcc3a"
+          }
+        },
+        {
+          "client_id": "23703470135-sjj3ui0kdpqeoeugotoc83a80d4c2al1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADQ3P3PscJrTzCz9yw5dFWvc5AE5flEYw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "23703470135-sjj3ui0kdpqeoeugotoc83a80d4c2al1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "23703470135-t71jna10diqtstrtd8bm7ednjk8miiri.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "Grinevich.HelpForRust"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

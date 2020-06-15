@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Help for Rust</string>
+    <string name="level_1">Level 1</string>
+    <string name="level_2">Level 2</string>
+    <string name="level_3">Level 3</string>
+    <string name="explore">Explore</string>
+    <string name="remove">Remove</string>
+    <string name="chance">Chance -</string>
+    <string name="blueprints">Blueprints</string>
+    <string name="furnace_info">Furnace Info</string>
+    <string name="iron">iron</string>
+    <string name="sulfur">sulfur</string>
+    <string name="mvk">MVK</string>
+    <string name="raid_calculator">Raid calculator</string>
+    <string name="purchase">Purchase</string>
+    <string name="doors">Doors</string>
+    <string name="walls">Walls</string>
+    <string name="windows">Windows</string>
+    <string name="other">Other</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
+    <string name="_1">1</string>
+    <string name="x75">x75</string>
+    <string name="x300">x300</string>
+    <string name="x1000">x1000</string>
+    <string name="click_on_blueprint">Click on blueprint</string>
+    <string name="dialog_message">Clear list of studied drawings?</string>
+    <string name="dialog_title">Attention</string>
+    <string name="dialog_ok">Yes</string>
+    <string name="dialog_cancel">No</string>
+    <string name="thanks">Thanks for your support</string>
+    <string name="adsOff">Disable Ads</string>
+    <string name="restorePurchase">Restore purchases</string>
+</resources>
