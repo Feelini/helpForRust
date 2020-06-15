@@ -17,6 +17,9 @@ public class RaidCalculatorList {
     private List<Weapons> Weapons;
     private List<WeaponsSubject> WeaponsSubject;
 
+    public RaidCalculatorList() {
+    }
+
     public RaidCalculatorList(List<Item> items, List<ItemCompound> itemsCompound, List<ItemWeapon> itemsWeapons, List<ru.dorofeev.helpforrust.models.Subject> subject, List<ru.dorofeev.helpforrust.models.Weapons> weapons, List<ru.dorofeev.helpforrust.models.WeaponsSubject> weaponsSubject) {
         Items = items;
         ItemsCompound = itemsCompound;

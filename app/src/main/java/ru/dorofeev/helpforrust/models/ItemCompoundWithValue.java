@@ -1,20 +1,20 @@
 package ru.dorofeev.helpforrust.models;
 
 public class ItemCompoundWithValue {
-    private ItemCompound itemCompound;
+    private Item item;
     private int value;
 
-    public ItemCompoundWithValue(ItemCompound itemCompound, int value) {
-        this.itemCompound = itemCompound;
+    public ItemCompoundWithValue(Item item, int value) {
+        this.item = item;
         this.value = value;
     }
 
-    public ItemCompound getItemCompound() {
-        return itemCompound;
+    public Item getItemCompound() {
+        return item;
     }
 
-    public void setItemCompound(ItemCompound itemCompound) {
-        this.itemCompound = itemCompound;
+    public void setItemCompound(Item item) {
+        this.item = item;
     }
 
     public int getValue() {

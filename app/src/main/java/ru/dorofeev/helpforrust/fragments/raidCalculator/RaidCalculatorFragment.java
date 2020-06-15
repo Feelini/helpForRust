@@ -28,15 +28,16 @@ import ru.dorofeev.helpforrust.fragments.raidCalculator.tabsFragments.WallsFragm
 import ru.dorofeev.helpforrust.fragments.raidCalculator.tabsFragments.WindowsFragment;
 import ru.dorofeev.helpforrust.models.Item;
 import ru.dorofeev.helpforrust.models.ItemCompound;
+import ru.dorofeev.helpforrust.models.ItemCompoundWithValue;
 import ru.dorofeev.helpforrust.models.ItemWeapon;
 import ru.dorofeev.helpforrust.models.ItemWithValue;
+import ru.dorofeev.helpforrust.models.RaidCalculatorListItem;
 import ru.dorofeev.helpforrust.models.Subject;
-import ru.dorofeev.helpforrust.models.WeaponItemList;
 import ru.dorofeev.helpforrust.models.Weapons;
 import ru.dorofeev.helpforrust.models.WeaponsSubject;
 import ru.dorofeev.helpforrust.models.WeaponsWithValue;
 import ru.dorofeev.helpforrust.models.allDb.Db;
-import ru.dorofeev.helpforrust.utils.Helper;
+import ru.dorofeev.helpforrust.models.allDb.RaidCalculatorList;
 import ru.dorofeev.helpforrust.utils.ViewModelFactory;
 
 public class RaidCalculatorFragment extends Fragment {
@@ -53,15 +54,17 @@ public class RaidCalculatorFragment extends Fragment {
     private static RaidCalculatorFragment instance;
     private Unbinder unbinder;
     private WeaponsAdapter adapter;
-    private List<Weapons> weapons;
+    private List<WeaponsSubject> weaponsSubjects;
+    private RaidCalculatorList raidCalculatorList;
     private List<ItemWeapon> itemWeapons;
+    private List<ItemWithValue> itemWithValues;
     private List<ItemCompound> itemCompounds;
-    private List<Item> items;
+    private List<ItemCompoundWithValue> itemCompoundWithValues;
+    private List<RaidCalculatorListItem> raidCalculatorListItems;
     private List<WeaponsWithValue> weaponsWithValues = new ArrayList<>();
-    private Db db;
 
-    public static RaidCalculatorFragment getInstance(){
-        if (instance == null){
+    public static RaidCalculatorFragment getInstance() {
+        if (instance == null) {
             instance = new RaidCalculatorFragment();
         }
         return instance;
@@ -77,24 +80,11 @@ public class RaidCalculatorFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        viewModel.getSubjects().observe(getViewLifecycleOwner(), subjects1 -> {
-            getSubjectsType(subjects1);
+        viewModel.getRaidCalculator().observe(getViewLifecycleOwner(), raidCalculatorList -> {
+            this.raidCalculatorList = raidCalculatorList;
+            getSubjectsType(raidCalculatorList.getSubject());
             showDoorsFragment();
         });
-        viewModel.getWeapons().observe(getViewLifecycleOwner(), weapons1 -> {
-            weapons = weapons1;
-        });
-//        viewModel.getWeaponsSubject().observe(getViewLifecycleOwner(), weaponsSubjects -> {
-//            weaponsWithValues = getWeaponsWithValue(weaponsSubjects);
-//            List<WeaponItemList> weaponItemLists = Helper.getInstance().getWeaponsItemsList(weaponsSubjects, weapons, items, itemWeapons, itemCompounds);
-//            showWeaponsList(weaponsWithValues);
-//        });
-        viewModel.getDb().observe(getViewLifecycleOwner(), db ->
-                this.db = db
-        );
-        viewModel.getItemWeapons().observe(getViewLifecycleOwner(), itemWeapons1 -> itemWeapons = itemWeapons1);
-        viewModel.getItemCompounds().observe(getViewLifecycleOwner(), itemCompounds1 -> itemCompounds = itemCompounds1);
-        viewModel.getItems().observe(getViewLifecycleOwner(), items1 -> items = items1);
 
         return inflater.inflate(R.layout.fragment_raid_calculator, container, false);
     }
@@ -103,17 +93,12 @@ public class RaidCalculatorFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
-        viewModel.fetchSubjects();
-        viewModel.fetchWeapons();
-        viewModel.fetchItemWeapons();
-        viewModel.fetchItemCompounds();
-        viewModel.fetchItems();
-        viewModel.fetchDb();
+        viewModel.fetchRaidCalculator();
 
         tabsRaidCalculator.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                switch (tab.getPosition()){
+                switch (tab.getPosition()) {
                     case 0:
                         showDoorsFragment();
                         break;
@@ -144,77 +129,79 @@ public class RaidCalculatorFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (unbinder != null){
+        if (unbinder != null) {
             unbinder.unbind();
         }
     }
 
-    private List<WeaponsWithValue> getWeaponsWithValue(List<WeaponsSubject> weaponsSubjects){
-        List<WeaponsWithValue> weaponsWithValues = new ArrayList<>();
-        List<ItemWithValue> itemWithValues = new ArrayList<>();
-        for (WeaponsSubject weaponsSubject: weaponsSubjects){
-            for (ItemWeapon itemWeapon: itemWeapons){
-                if (itemWeapon.getWeapons_id() == weaponsSubject.getWeapons_id()){
-                    itemWithValues.add(new ItemWithValue(items.get((int) itemWeapon.getItems_id()), itemWeapon.getValue()));
+    private void getSubjectsType(List<Subject> subjects) {
+        for (Subject subject : subjects) {
+            if (subject != null) {
+                switch (subject.getType()) {
+                    case "Двери":
+                        subjectsDoors.add(subject);
+                        break;
+                    case "Окна":
+                        subjectsWindows.add(subject);
+                        break;
+                    case "Стены":
+                        subjectsWalls.add(subject);
+                        break;
+                    case "Другое":
+                        subjectsOther.add(subject);
+                        break;
                 }
             }
-            weaponsWithValues.add(new WeaponsWithValue(weapons.get((int) weaponsSubject.getWeapons_id() - 1), weaponsSubject.getValue()));;
-        }
-        return weaponsWithValues;
-    }
-
-    private void getSubjectsType(List<Subject> subjects){
-        for (Subject subject: subjects){
-            switch (subject.getType()){
-                case "Двери":
-                    subjectsDoors.add(subject);
-                    break;
-                case "Окна":
-                    subjectsWindows.add(subject);
-                    break;
-                case "Стены":
-                    subjectsWalls.add(subject);
-                    break;
-                case "Другое":
-                    subjectsOther.add(subject);
-                    break;
-            }
         }
     }
 
-    private void showDoorsFragment(){
+    private void showDoorsFragment() {
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.tabsSubjectList, DoorsFragment.getInstance(subjectsDoors), IronFragment.class.getName())
                 .commit();
     }
 
-    private void showWallsFragment(){
+    private void showWallsFragment() {
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.tabsSubjectList, WallsFragment.getInstance(subjectsWalls), WallsFragment.class.getName())
                 .commit();
     }
 
-    private void showWindowsFragment(){
+    private void showWindowsFragment() {
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.tabsSubjectList, WindowsFragment.getInstance(subjectsWindows), WindowsFragment.class.getName())
                 .commit();
     }
 
-    private void showOtherFragment(){
+    private void showOtherFragment() {
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.tabsSubjectList, OtherFragment.getInstance(subjectsOther), OtherFragment.class.getName())
                 .commit();
     }
 
-    private void showWeaponsList(List<WeaponsWithValue> weaponsWithValues){
-        adapter = new WeaponsAdapter(weaponsWithValues, getContext());
+    private void showWeaponsList(List<RaidCalculatorListItem> raidCalculatorListItems) {
+        adapter = new WeaponsAdapter(raidCalculatorListItems, getContext());
         weaponsList.setAdapter(adapter);
         weaponsList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
     }
 
     public void onSubjectClick(int position, String type, Subject subject) {
-        viewModel.fetchWeaponsSubject(subject.getId());
-        switch (type){
+        raidCalculatorListItems = new ArrayList<>();
+        weaponsSubjects = getWeaponSubject(subject.getId(), raidCalculatorList.getWeaponsSubject());
+        for (WeaponsSubject weaponsSubject : weaponsSubjects) {
+            weaponsWithValues = getWeaponsWithValue(weaponsSubject, raidCalculatorList.getWeapons());
+            for (WeaponsWithValue weaponsWithValue : weaponsWithValues) {
+                itemWeapons = getItemsWeapon(weaponsWithValue, raidCalculatorList.getItemsWeapons());
+                itemWithValues = getItemsWithValue(itemWeapons, raidCalculatorList.getItems());
+                itemCompounds = getItemsCompound(itemWithValues, raidCalculatorList.getItemsCompound());
+                itemCompoundWithValues = getItemsCompoundWithValue(itemCompounds, raidCalculatorList.getItems());
+                raidCalculatorListItems.add(new RaidCalculatorListItem(weaponsWithValue, itemWithValues, itemCompoundWithValues));
+            }
+        }
+
+        showWeaponsList(raidCalculatorListItems);
+
+        switch (type) {
             case "Двери":
                 DoorsFragment.getInstance().setSelectedItem(position);
                 break;
@@ -228,5 +215,84 @@ public class RaidCalculatorFragment extends Fragment {
                 OtherFragment.getInstance().setSelectedItem(position);
                 break;
         }
+    }
+
+    private List<ItemCompoundWithValue> getItemsCompoundWithValue(List<ItemCompound> itemCompounds, List<Item> items) {
+        List<ItemCompoundWithValue> itemCompoundWithValueList = new ArrayList<>();
+        for (ItemCompound itemCompound : itemCompounds) {
+            for (Item item : items) {
+                if (item != null && itemCompound != null) {
+                    if (itemCompound.getItems_compound_id() == item.getId()) {
+                        itemCompoundWithValueList.add(new ItemCompoundWithValue(item, itemCompound.getValue_compound()));
+                    }
+                }
+            }
+        }
+        return itemCompoundWithValueList;
+    }
+
+    private List<ItemCompound> getItemsCompound(List<ItemWithValue> itemWithValues, List<ItemCompound> itemsCompounds) {
+        List<ItemCompound> itemCompoundList = new ArrayList<>();
+        for (ItemWithValue itemWithValue : itemWithValues) {
+            for (ItemCompound itemCompound : itemsCompounds) {
+                if (itemCompound != null && itemWithValue != null) {
+                    if (itemWithValue.getItem().getId() == itemCompound.getItems_id()) {
+                        itemCompoundList.add(itemCompound);
+                    }
+                }
+            }
+        }
+        return itemCompoundList;
+    }
+
+    private List<ItemWithValue> getItemsWithValue(List<ItemWeapon> itemWeapons, List<Item> items) {
+        List<ItemWithValue> itemWithValues = new ArrayList<>();
+        for (ItemWeapon itemWeapon : itemWeapons) {
+            for (Item item : items) {
+                if (item != null && itemWeapon != null) {
+                    if (itemWeapon.getItems_id() == item.getId()) {
+                        itemWithValues.add(new ItemWithValue(item, itemWeapon.getValue()));
+                    }
+                }
+            }
+        }
+        return itemWithValues;
+    }
+
+    private List<ItemWeapon> getItemsWeapon(WeaponsWithValue weaponsWithValue, List<ItemWeapon> itemsWeapons) {
+        List<ItemWeapon> itemWeaponList = new ArrayList<>();
+        for (ItemWeapon itemWeapon : itemsWeapons) {
+            if (itemWeapon != null && weaponsWithValue != null) {
+                if (weaponsWithValue.getWeapons().getId() == itemWeapon.getWeapons_id()) {
+                    itemWeaponList.add(itemWeapon);
+                }
+            }
+        }
+
+        return itemWeaponList;
+    }
+
+    private List<WeaponsWithValue> getWeaponsWithValue(WeaponsSubject weaponsSubject, List<Weapons> weapons) {
+        List<WeaponsWithValue> weaponsWithValues = new ArrayList<>();
+        for (Weapons weapon : weapons) {
+            if (weapon != null && weaponsSubject != null) {
+                if (weaponsSubject.getWeapons_id() == weapon.getId()) {
+                    weaponsWithValues.add(new WeaponsWithValue(weapon, weaponsSubject.getValue()));
+                }
+            }
+        }
+        return weaponsWithValues;
+    }
+
+    private List<WeaponsSubject> getWeaponSubject(long id, List<WeaponsSubject> weaponsSubjects) {
+        List<WeaponsSubject> weaponsSubjectsById = new ArrayList<>();
+        for (WeaponsSubject weaponsSubject : weaponsSubjects) {
+            if (weaponsSubject != null) {
+                if (weaponsSubject.getSubject_id() == id) {
+                    weaponsSubjectsById.add(weaponsSubject);
+                }
+            }
+        }
+        return weaponsSubjectsById;
     }
 }

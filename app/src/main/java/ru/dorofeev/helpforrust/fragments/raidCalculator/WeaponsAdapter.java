@@ -17,15 +17,16 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.dorofeev.helpforrust.R;
+import ru.dorofeev.helpforrust.models.RaidCalculatorListItem;
 import ru.dorofeev.helpforrust.models.WeaponsWithValue;
 
 public class WeaponsAdapter extends RecyclerView.Adapter<WeaponsAdapter.WeaponsViewHolder> {
 
-    private List<WeaponsWithValue> weaponsWithValues;
+    private List<RaidCalculatorListItem> raidCalculatorListItems;
     private Context context;
 
-    public WeaponsAdapter(List<WeaponsWithValue> weaponsWithValues, Context context) {
-        this.weaponsWithValues = weaponsWithValues;
+    public WeaponsAdapter(List<RaidCalculatorListItem> raidCalculatorListItems, Context context) {
+        this.raidCalculatorListItems = raidCalculatorListItems;
         this.context = context;
     }
 
@@ -38,12 +39,12 @@ public class WeaponsAdapter extends RecyclerView.Adapter<WeaponsAdapter.WeaponsV
 
     @Override
     public void onBindViewHolder(@NonNull WeaponsViewHolder holder, int position) {
-        holder.bindData(weaponsWithValues.get(position));
+        holder.bindData(raidCalculatorListItems.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return weaponsWithValues != null ? weaponsWithValues.size() : 0;
+        return raidCalculatorListItems != null ? raidCalculatorListItems.size() : 0;
     }
 
     public class WeaponsViewHolder extends RecyclerView.ViewHolder {
@@ -58,9 +59,9 @@ public class WeaponsAdapter extends RecyclerView.Adapter<WeaponsAdapter.WeaponsV
             ButterKnife.bind(this, itemView);
         }
 
-        public void bindData(WeaponsWithValue weaponWithValue) {
-            Picasso.get().load(weaponWithValue.getWeapons().getImageUrl()).into(weaponImage);
-            weaponValue.setText(String.valueOf(weaponWithValue.getValue()));
+        public void bindData(RaidCalculatorListItem raidCalculatorListItem) {
+            Picasso.get().load(raidCalculatorListItem.getWeaponsWithValue().getWeapons().getImageUrl()).into(weaponImage);
+            weaponValue.setText(String.valueOf(raidCalculatorListItem.getWeaponsWithValue().getValue()));
         }
     }
 }
