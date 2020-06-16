@@ -3,10 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="5dp"
+    android:background="@color/bgSecondary"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
+        android:id="@+id/itemImageLayout"
         android:layout_width="120dp"
         android:layout_height="160dp"
         android:background="@color/toolbarText"
@@ -32,5 +34,52 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/itemsLayout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintStart_toEndOf="@id/itemImageLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/itemTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_items"
+            android:textSize="16sp"
+            android:textColor="@color/toolbarText"
+            android:layout_gravity="center_horizontal"/>
+
+        <GridView
+            android:id="@+id/itemList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:numColumns="auto_fit"
+            android:columnWidth="80dp"/>
+
+        <TextView
+            android:id="@+id/itemCompoundTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/compound_items"
+            android:textSize="16sp"
+            android:textColor="@color/toolbarText"
+            android:layout_gravity="center_horizontal"/>
+
+        <GridView
+            android:id="@+id/itemCompoundList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:numColumns="auto_fit"
+            android:columnWidth="80dp"/>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

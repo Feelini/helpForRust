@@ -31,4 +31,6 @@
     <string name="thanks">Спасибо за Вашу поддержку</string>
     <string name="adsOff">Отключить рекламу</string>
     <string name="restorePurchase">Восстановить покупки</string>
+    <string name="main_items">Основные предметы</string>
+    <string name="compound_items">Составные предметы</string>
 </resources>

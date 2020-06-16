@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,6 +53,12 @@ public class RaidCalculatorFragment extends Fragment {
     TabLayout tabsRaidCalculator;
     @BindView(R.id.weaponsList)
     RecyclerView weaponsList;
+    @BindView(R.id.buttonMinus)
+    ImageButton buttonMinus;
+    @BindView(R.id.buttonPlus)
+    ImageButton buttonPlus;
+    @BindView(R.id.multiplier)
+    TextView multiplier;
     private RaidCalculatorFragmentViewModel viewModel;
     private static RaidCalculatorFragment instance;
     private Unbinder unbinder;
@@ -124,6 +133,27 @@ public class RaidCalculatorFragment extends Fragment {
 
             }
         });
+
+        buttonMinus.setOnClickListener(v -> {
+            if (adapter != null) {
+                int multiplierValue = Integer.parseInt(multiplier.getText().toString());
+                if (multiplierValue > 1) {
+                    multiplierValue--;
+                    multiplier.setText(String.format("%d", multiplierValue));
+                    adapter.setMultiplier(multiplierValue);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
+        buttonPlus.setOnClickListener(v -> {
+            if (adapter != null) {
+                int multiplierValue = Integer.parseInt(multiplier.getText().toString());
+                multiplierValue++;
+                multiplier.setText(String.format("%d", multiplierValue));
+                adapter.setMultiplier(multiplierValue);
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -179,27 +209,26 @@ public class RaidCalculatorFragment extends Fragment {
                 .commit();
     }
 
-    private void showWeaponsList(List<RaidCalculatorListItem> raidCalculatorListItems) {
-        adapter = new WeaponsAdapter(raidCalculatorListItems, getContext());
+    private void showWeaponsList(List<RaidCalculatorListItem> raidCalculatorListItems, int multiplier) {
+        adapter = new WeaponsAdapter(raidCalculatorListItems, getContext(), multiplier);
         weaponsList.setAdapter(adapter);
         weaponsList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
     }
 
     public void onSubjectClick(int position, String type, Subject subject) {
+        int multiplierValue = Integer.parseInt(multiplier.getText().toString());
         raidCalculatorListItems = new ArrayList<>();
         weaponsSubjects = getWeaponSubject(subject.getId(), raidCalculatorList.getWeaponsSubject());
-        for (WeaponsSubject weaponsSubject : weaponsSubjects) {
-            weaponsWithValues = getWeaponsWithValue(weaponsSubject, raidCalculatorList.getWeapons());
-            for (WeaponsWithValue weaponsWithValue : weaponsWithValues) {
-                itemWeapons = getItemsWeapon(weaponsWithValue, raidCalculatorList.getItemsWeapons());
-                itemWithValues = getItemsWithValue(itemWeapons, raidCalculatorList.getItems());
-                itemCompounds = getItemsCompound(itemWithValues, raidCalculatorList.getItemsCompound());
-                itemCompoundWithValues = getItemsCompoundWithValue(itemCompounds, raidCalculatorList.getItems());
-                raidCalculatorListItems.add(new RaidCalculatorListItem(weaponsWithValue, itemWithValues, itemCompoundWithValues));
-            }
+        weaponsWithValues = getWeaponsWithValue(weaponsSubjects, raidCalculatorList.getWeapons());
+        for (WeaponsWithValue weaponsWithValue : weaponsWithValues) {
+            itemWeapons = getItemsWeapon(weaponsWithValue, raidCalculatorList.getItemsWeapons());
+            itemWithValues = getItemsWithValue(itemWeapons, raidCalculatorList.getItems());
+            itemCompounds = getItemsCompound(itemWithValues, raidCalculatorList.getItemsCompound());
+            itemCompoundWithValues = getItemsCompoundWithValue(itemCompounds, raidCalculatorList.getItems());
+            raidCalculatorListItems.add(new RaidCalculatorListItem(weaponsWithValue, itemWithValues, itemCompoundWithValues));
         }
 
-        showWeaponsList(raidCalculatorListItems);
+        showWeaponsList(raidCalculatorListItems, multiplierValue);
 
         switch (type) {
             case "Двери":
@@ -237,7 +266,10 @@ public class RaidCalculatorFragment extends Fragment {
             for (ItemCompound itemCompound : itemsCompounds) {
                 if (itemCompound != null && itemWithValue != null) {
                     if (itemWithValue.getItem().getId() == itemCompound.getItems_id()) {
-                        itemCompoundList.add(itemCompound);
+                        ItemCompound itemCompound1 = new ItemCompound(itemCompound.getId(),
+                                itemCompound.getItems_compound_id(), itemCompound.getItems_id(),
+                                itemCompound.getValue_compound() * itemWithValue.getValue());
+                        itemCompoundList.add(itemCompound1);
                     }
                 }
             }
@@ -264,7 +296,11 @@ public class RaidCalculatorFragment extends Fragment {
         for (ItemWeapon itemWeapon : itemsWeapons) {
             if (itemWeapon != null && weaponsWithValue != null) {
                 if (weaponsWithValue.getWeapons().getId() == itemWeapon.getWeapons_id()) {
-                    itemWeaponList.add(itemWeapon);
+                    ItemWeapon itemWeapon1 = new ItemWeapon(itemWeapon.getId(),
+                            itemWeapon.getItems_id(),
+                            itemWeapon.getValue() * weaponsWithValue.getValue(),
+                            itemWeapon.getWeapons_id());
+                    itemWeaponList.add(itemWeapon1);
                 }
             }
         }
@@ -272,12 +308,14 @@ public class RaidCalculatorFragment extends Fragment {
         return itemWeaponList;
     }
 
-    private List<WeaponsWithValue> getWeaponsWithValue(WeaponsSubject weaponsSubject, List<Weapons> weapons) {
+    private List<WeaponsWithValue> getWeaponsWithValue(List<WeaponsSubject> weaponsSubjects, List<Weapons> weapons) {
         List<WeaponsWithValue> weaponsWithValues = new ArrayList<>();
-        for (Weapons weapon : weapons) {
-            if (weapon != null && weaponsSubject != null) {
-                if (weaponsSubject.getWeapons_id() == weapon.getId()) {
-                    weaponsWithValues.add(new WeaponsWithValue(weapon, weaponsSubject.getValue()));
+        for (WeaponsSubject weaponsSubject : weaponsSubjects) {
+            for (Weapons weapon : weapons) {
+                if (weapon != null && weaponsSubject != null) {
+                    if (weaponsSubject.getWeapons_id() == weapon.getId()) {
+                        weaponsWithValues.add(new WeaponsWithValue(weapon, weaponsSubject.getValue()));
+                    }
                 }
             }
         }

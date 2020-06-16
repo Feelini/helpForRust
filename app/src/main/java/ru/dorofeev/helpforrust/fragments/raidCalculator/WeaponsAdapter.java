@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,11 +24,13 @@ import ru.dorofeev.helpforrust.models.WeaponsWithValue;
 public class WeaponsAdapter extends RecyclerView.Adapter<WeaponsAdapter.WeaponsViewHolder> {
 
     private List<RaidCalculatorListItem> raidCalculatorListItems;
+    private int multiplier = 1;
     private Context context;
 
-    public WeaponsAdapter(List<RaidCalculatorListItem> raidCalculatorListItems, Context context) {
+    public WeaponsAdapter(List<RaidCalculatorListItem> raidCalculatorListItems, Context context, int multiplier) {
         this.raidCalculatorListItems = raidCalculatorListItems;
         this.context = context;
+        this.multiplier = multiplier;
     }
 
     @NonNull
@@ -39,12 +42,16 @@ public class WeaponsAdapter extends RecyclerView.Adapter<WeaponsAdapter.WeaponsV
 
     @Override
     public void onBindViewHolder(@NonNull WeaponsViewHolder holder, int position) {
-        holder.bindData(raidCalculatorListItems.get(position));
+        holder.bindData(raidCalculatorListItems.get(position), context, multiplier);
     }
 
     @Override
     public int getItemCount() {
         return raidCalculatorListItems != null ? raidCalculatorListItems.size() : 0;
+    }
+
+    public void setMultiplier(int multiplier){
+        this.multiplier = multiplier;
     }
 
     public class WeaponsViewHolder extends RecyclerView.ViewHolder {
@@ -53,15 +60,37 @@ public class WeaponsAdapter extends RecyclerView.Adapter<WeaponsAdapter.WeaponsV
         ImageView weaponImage;
         @BindView(R.id.weaponValue)
         TextView weaponValue;
+        @BindView(R.id.itemTitle)
+        TextView itemTitle;
+        @BindView(R.id.itemList)
+        GridView itemList;
+        @BindView(R.id.itemCompoundTitle)
+        TextView itemCompoundTitle;
+        @BindView(R.id.itemCompoundList)
+        GridView itemCompoundList;
 
         public WeaponsViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        public void bindData(RaidCalculatorListItem raidCalculatorListItem) {
+        public void bindData(RaidCalculatorListItem raidCalculatorListItem, Context context, int multiplier) {
             Picasso.get().load(raidCalculatorListItem.getWeaponsWithValue().getWeapons().getImageUrl()).into(weaponImage);
-            weaponValue.setText(String.valueOf(raidCalculatorListItem.getWeaponsWithValue().getValue()));
+            weaponValue.setText(String.valueOf(raidCalculatorListItem.getWeaponsWithValue().getValue() * multiplier));
+            if (raidCalculatorListItem.getItemWithValues() != null &&
+                    raidCalculatorListItem.getItemWithValues().size() > 0){
+                itemList.setAdapter(new ItemsAdapter(raidCalculatorListItem.getItemWithValues(), context, multiplier));
+                itemCompoundTitle.setVisibility(View.VISIBLE);
+            } else {
+                itemTitle.setVisibility(View.GONE);
+            }
+            if (raidCalculatorListItem.getItemCompoundWithValues() != null &&
+                    raidCalculatorListItem.getItemCompoundWithValues().size() > 0){
+                itemCompoundList.setAdapter(new ItemsCompoundAdapter(raidCalculatorListItem.getItemCompoundWithValues(), context, multiplier));
+                itemCompoundTitle.setVisibility(View.VISIBLE);
+            } else {
+                itemCompoundTitle.setVisibility(View.GONE);
+            }
         }
     }
 }

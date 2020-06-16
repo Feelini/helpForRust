@@ -31,4 +31,6 @@
     <string name="thanks">Thanks for your support</string>
     <string name="adsOff">Disable Ads</string>
     <string name="restorePurchase">Restore purchases</string>
+    <string name="main_items">Main items</string>
+    <string name="compound_items">Compound items</string>
 </resources>
