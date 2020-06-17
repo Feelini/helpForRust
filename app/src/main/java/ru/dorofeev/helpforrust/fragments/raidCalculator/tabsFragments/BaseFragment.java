@@ -62,7 +62,9 @@ public class BaseFragment extends Fragment {
     }
 
     public void setSelectedItem(int position){
-        adapter.setSelectedPosition(position);
-        adapter.notifyDataSetChanged();
+        if (adapter != null) {
+            adapter.setSelectedPosition(position);
+            adapter.notifyDataSetChanged();
+        }
     }
 }

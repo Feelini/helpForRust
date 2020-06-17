@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -196,31 +195,34 @@ public class RaidCalculatorFragment extends Fragment {
 
     private void displayWeaponsList(){
         weaponsList.setVisibility(View.VISIBLE);
-        emptyList.setVisibility(View.GONE);
+        emptyList.setVisibility(View.INVISIBLE);
     }
 
     private void getSubjectsType(List<Subject> subjects) {
-        for (Subject subject : subjects) {
-            if (subject != null) {
-                switch (subject.getType()) {
-                    case "Двери":
-                        subjectsDoors.add(subject);
-                        break;
-                    case "Окна":
-                        subjectsWindows.add(subject);
-                        break;
-                    case "Стены":
-                        subjectsWalls.add(subject);
-                        break;
-                    case "Другое":
-                        subjectsOther.add(subject);
-                        break;
+        if (subjectsDoors.size() == 0) {
+            for (Subject subject : subjects) {
+                if (subject != null) {
+                    switch (subject.getType()) {
+                        case "Двери":
+                            subjectsDoors.add(subject);
+                            break;
+                        case "Окна":
+                            subjectsWindows.add(subject);
+                            break;
+                        case "Стены":
+                            subjectsWalls.add(subject);
+                            break;
+                        case "Другое":
+                            subjectsOther.add(subject);
+                            break;
+                    }
                 }
             }
         }
     }
 
     private void showDoorsFragment() {
+        DoorsFragment.getInstance().setSelectedItem(-1);
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.tabsSubjectList, DoorsFragment.getInstance(subjectsDoors), IronFragment.class.getName())
                 .commit();
