@@ -56,6 +56,7 @@ public class FurnaceAdapter extends RecyclerView.Adapter<FurnaceAdapter.FurnaceV
         }
 
         public void bindData(Furnace furnace) {
+            furnaceImage.setMaxWidth(furnaceImage.getHeight());
             Picasso.get().load(furnace.getImageUrl()).into(furnaceImage);
         }
     }

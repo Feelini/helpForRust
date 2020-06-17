@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.appcompat.widget.Toolbar
@@ -22,6 +23,42 @@
             android:layout_gravity="center_horizontal"/>
 
     </androidx.appcompat.widget.Toolbar>
+
+<!--    <com.google.android.gms.ads.AdView-->
+<!--        android:id="@+id/adView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        ads:adSize="BANNER"-->
+<!--        ads:adUnitId="com.google.android.gms.ads.APPLICATION_ID"-->
+<!--        ads:layout_constraintTop_toBottomOf="@id/raidCalculatorToolbar"-->
+<!--        ads:layout_constraintStart_toStartOf="parent"-->
+<!--        ads:layout_constraintEnd_toEndOf="parent"-->
+<!--        ads:layout_constraintBottom_toTopOf="@id/weaponsList"/>-->
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/bgFurnace"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/raidCalculatorToolbar"
+        ads:layout_constraintBottom_toTopOf="@id/countItems">
+
+        <TextView
+            android:id="@+id/emptyList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bgBottomTabs"
+            android:textSize="20sp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/toolbarText"
+            android:gravity="center_horizontal"
+            android:text="@string/choose_what_you_want_to_destroy"/>
+
+    </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/weaponsList"
@@ -50,7 +87,7 @@
             android:layout_centerInParent="true"
             android:orientation="horizontal"
             android:background="@drawable/btn_common_background">
-            
+
             <ImageButton
                 android:id="@+id/buttonMinus"
                 android:layout_width="50dp"
@@ -69,7 +106,7 @@
                 android:textSize="20sp"
                 android:src="@drawable/ic_add"
                 android:background="@drawable/btn_background"/>
-            
+
         </LinearLayout>
 
         <TextView
@@ -82,7 +119,7 @@
             android:layout_marginStart="15dp"
             android:textSize="22sp"
             android:text="@string/_1"/>
-        
+
     </RelativeLayout>
 
     <FrameLayout
@@ -99,6 +136,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@color/bgBottomTabs"
+        app:tabGravity="fill"
         app:tabBackground="@drawable/tab_background"
         app:tabTextColor="@android:color/black"
         app:tabIndicator="@color/bgBottomTabs"

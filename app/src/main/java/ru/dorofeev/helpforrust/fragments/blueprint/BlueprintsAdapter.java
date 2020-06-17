@@ -19,11 +19,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.dorofeev.helpforrust.repo.database.CheckedItemEntity;
 
 public class BlueprintsAdapter extends RecyclerView.Adapter<BlueprintsAdapter.BlueprintsViewHolder>{
 
     private List<Blueprint> blueprints;
-    private List<Integer> checkedBlueprintsPosition = new ArrayList<>();
+    private List<CheckedItemEntity> checkedBlueprintsPosition = new ArrayList<>();
     private int currentPosition = -1;
     private Context context;
     private OnBlueprintClickListener onBlueprintClick;
@@ -33,16 +34,27 @@ public class BlueprintsAdapter extends RecyclerView.Adapter<BlueprintsAdapter.Bl
         void onBlueprintClick(Blueprint blueprint, int position, String type);
     }
 
-    public void addCheckedBlueprint(int position){
-        checkedBlueprintsPosition.add(position);
-    }
+//    public void addCheckedBlueprint(int position){
+//        checkedBlueprintsPosition.add(position);
+//    }
 
-    public void removeCheckedBlueprint(Integer position){
-        checkedBlueprintsPosition.remove(position);
-    }
+//    public void removeCheckedBlueprint(Integer position){
+//        checkedBlueprintsPosition.remove(position);
+//    }
 
-    public void removeAllSelect(){
-        checkedBlueprintsPosition = new ArrayList<>();
+//    public void removeAllSelect(){
+//        checkedBlueprintsPosition = new ArrayList<>();
+//    }
+
+    public CheckedItemEntity getCurrentItem(int position){
+        List<CheckedItemEntity> checkedItemEntities = new ArrayList<>();
+        for (CheckedItemEntity checkedItemEntity: checkedBlueprintsPosition){
+            if (checkedItemEntity.getPosition() == position){
+                checkedItemEntities.add(checkedItemEntity);
+                 break;
+            }
+        }
+        return checkedItemEntities.size() > 0 ? checkedItemEntities.get(0) : null;
     }
 
     public int getBlueprintsCount(){
@@ -53,8 +65,19 @@ public class BlueprintsAdapter extends RecyclerView.Adapter<BlueprintsAdapter.Bl
         currentPosition = position;
     }
 
+    public void setCheckedItems(List<CheckedItemEntity> checkedItems){
+        checkedBlueprintsPosition = checkedItems;
+    }
+
     public Boolean isAdded(int position){
-        return checkedBlueprintsPosition.contains(position);
+        boolean isAdded = false;
+        for (CheckedItemEntity checkedItemEntity: checkedBlueprintsPosition){
+            if (checkedItemEntity.getPosition() == position) {
+                isAdded = true;
+                break;
+            }
+        }
+        return isAdded;
     }
 
     public BlueprintsAdapter(List<Blueprint> blueprints, Context context, String type){
@@ -76,7 +99,13 @@ public class BlueprintsAdapter extends RecyclerView.Adapter<BlueprintsAdapter.Bl
     @Override
     public void onBindViewHolder(@NonNull BlueprintsViewHolder holder, int position) {
         Boolean isSelected = currentPosition == position;
-        Boolean isAdded = checkedBlueprintsPosition.contains(position);
+        boolean isAdded = false;
+        for (CheckedItemEntity checkedItemEntity: checkedBlueprintsPosition){
+            if (checkedItemEntity.getPosition() == position) {
+                isAdded = true;
+                break;
+            }
+        }
         holder.bindData(blueprints.get(position), isSelected, isAdded);
     }
 

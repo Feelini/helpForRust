@@ -15,6 +15,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+//import com.google.android.gms.ads.AdRequest;
+//import com.google.android.gms.ads.AdView;
+//import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -39,7 +42,6 @@ import ru.dorofeev.helpforrust.models.Subject;
 import ru.dorofeev.helpforrust.models.Weapons;
 import ru.dorofeev.helpforrust.models.WeaponsSubject;
 import ru.dorofeev.helpforrust.models.WeaponsWithValue;
-import ru.dorofeev.helpforrust.models.allDb.Db;
 import ru.dorofeev.helpforrust.models.allDb.RaidCalculatorList;
 import ru.dorofeev.helpforrust.utils.ViewModelFactory;
 
@@ -59,6 +61,10 @@ public class RaidCalculatorFragment extends Fragment {
     ImageButton buttonPlus;
     @BindView(R.id.multiplier)
     TextView multiplier;
+    @BindView(R.id.emptyList)
+    TextView emptyList;
+//    @BindView(R.id.adView)
+//    AdView adView;
     private RaidCalculatorFragmentViewModel viewModel;
     private static RaidCalculatorFragment instance;
     private Unbinder unbinder;
@@ -102,11 +108,17 @@ public class RaidCalculatorFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
+//        MobileAds.initialize(getContext());
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//        adView.loadAd(adRequest);
         viewModel.fetchRaidCalculator();
+        hideWeaponsList();
 
         tabsRaidCalculator.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                hideWeaponsList();
+                multiplier.setText(String.valueOf(1));
                 switch (tab.getPosition()) {
                     case 0:
                         showDoorsFragment();
@@ -125,7 +137,20 @@ public class RaidCalculatorFragment extends Fragment {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+                switch (tab.getPosition()) {
+                    case 0:
+                        DoorsFragment.getInstance().setSelectedItem(-1);
+                        break;
+                    case 1:
+                        WallsFragment.getInstance().setSelectedItem(-1);
+                        break;
+                    case 2:
+                        WindowsFragment.getInstance().setSelectedItem(-1);
+                        break;
+                    case 3:
+                        OtherFragment.getInstance().setSelectedItem(-1);
+                        break;
+                }
             }
 
             @Override
@@ -162,6 +187,16 @@ public class RaidCalculatorFragment extends Fragment {
         if (unbinder != null) {
             unbinder.unbind();
         }
+    }
+
+    private void hideWeaponsList(){
+        weaponsList.setVisibility(View.GONE);
+        emptyList.setVisibility(View.VISIBLE);
+    }
+
+    private void displayWeaponsList(){
+        weaponsList.setVisibility(View.VISIBLE);
+        emptyList.setVisibility(View.GONE);
     }
 
     private void getSubjectsType(List<Subject> subjects) {
@@ -216,6 +251,7 @@ public class RaidCalculatorFragment extends Fragment {
     }
 
     public void onSubjectClick(int position, String type, Subject subject) {
+        multiplier.setText(String.valueOf(1));
         int multiplierValue = Integer.parseInt(multiplier.getText().toString());
         raidCalculatorListItems = new ArrayList<>();
         weaponsSubjects = getWeaponSubject(subject.getId(), raidCalculatorList.getWeaponsSubject());
@@ -228,6 +264,7 @@ public class RaidCalculatorFragment extends Fragment {
             raidCalculatorListItems.add(new RaidCalculatorListItem(weaponsWithValue, itemWithValues, itemCompoundWithValues));
         }
 
+        displayWeaponsList();
         showWeaponsList(raidCalculatorListItems, multiplierValue);
 
         switch (type) {

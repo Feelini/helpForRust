@@ -33,4 +33,7 @@
     <string name="restorePurchase">Restore purchases</string>
     <string name="main_items">Main items</string>
     <string name="compound_items">Compound items</string>
+    <string name="choose_what_you_want_to_destroy">Choose what you want to destroy</string>
+    <string name="all_explored">All explored</string>
+    <string name="banner_ad_unit_id">ca-app-pub-9023638698585769/4959252606</string>
 </resources>

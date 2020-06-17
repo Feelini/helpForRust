@@ -18,10 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
 import ru.dorofeev.helpforrust.R;
 import ru.dorofeev.helpforrust.fragments.blueprint.BlueprintFragmentViewModel;
 import ru.dorofeev.helpforrust.fragments.blueprint.BlueprintsAdapter;
 import ru.dorofeev.helpforrust.models.Blueprint;
+import ru.dorofeev.helpforrust.repo.database.CheckedItemEntity;
 
 import java.util.List;
 
@@ -45,6 +47,7 @@ public class LevelTwoFragment extends Fragment {
     private List<Blueprint> blueprints;
     private Unbinder unbinder;
     private int selected = -1;
+    private CheckedItemEntity selectedItem;
 
     public static LevelTwoFragment getInstance(){
         if (instance == null) {
@@ -67,7 +70,6 @@ public class LevelTwoFragment extends Fragment {
         viewModel.getBlueprints().observe(getViewLifecycleOwner(),
                 blueprints1 -> {
                     if (blueprints1 != null && blueprints1.size() > 0) {
-                        setChance(blueprints1.size(), 0);
                         blueprints = blueprints1;
                         showBlueprintList(blueprints1);
                     }
@@ -83,20 +85,17 @@ public class LevelTwoFragment extends Fragment {
         exploreBtn.setOnClickListener(v -> {
             if (selected != -1) {
                 if (exploreBtn.getText().equals(getString(R.string.remove))) {
-                    adapter.removeCheckedBlueprint(selected);
+                    viewModel.deleteCheckedItem(selectedItem.getId(), "two");
                     exploreBtn.setText(R.string.explore);
                 } else {
-                    adapter.addCheckedBlueprint(selected);
+                    viewModel.saveNewItem(selected, "two");
                     exploreBtn.setText(getString(R.string.remove));
                 }
                 adapter.notifyDataSetChanged();
-                setChance(blueprints.size(), adapter.getBlueprintsCount());
             }
         });
 
-        deleteBtn.setOnClickListener(v -> {
-            showAlertDialog();
-        });
+        deleteBtn.setOnClickListener(v -> showAlertDialog());
 
         viewModel.fetchBlueprints("Level_2");
     }
@@ -111,13 +110,24 @@ public class LevelTwoFragment extends Fragment {
 
     private void showBlueprintList(List<Blueprint> blueprints) {
         adapter = new BlueprintsAdapter(blueprints, getContext(), "Two");
+        viewModel.getCheckedItems().observe(getViewLifecycleOwner(), checkedItemEntities -> {
+            adapter.setCheckedItems(checkedItemEntities);
+            selectedItem = adapter.getCurrentItem(selected);
+            setChance(blueprints.size(), adapter.getBlueprintsCount());
+            adapter.notifyDataSetChanged();
+        });
+        viewModel.fetchCheckedItems("two");
         blueprintList.setAdapter(adapter);
         blueprintList.setLayoutManager(new GridLayoutManager(getContext(), 5));
     }
 
     private void setChance(int size, int numberSelected) {
         double result = 1.0 / (size - numberSelected) * 100;
-        chanceNumber.setText(String.format("%.2f%%", result));
+        if (size - numberSelected == 0){
+            chanceNumber.setText(R.string.all_explored);
+        } else {
+            chanceNumber.setText(String.format("%.2f%%", result));
+        }
     }
 
     public void onBlueprintClick(int position, Blueprint blueprint) {
@@ -127,6 +137,7 @@ public class LevelTwoFragment extends Fragment {
         tableCount.setText("x" + blueprint.getValue_1());
         blueprintName.setText(blueprint.getName());
         if (adapter.isAdded(position)){
+            selectedItem = adapter.getCurrentItem(position);
             exploreBtn.setText(getString(R.string.remove));
         } else {
             exploreBtn.setText(R.string.explore);
@@ -138,8 +149,7 @@ public class LevelTwoFragment extends Fragment {
         builder.setMessage(R.string.dialog_message)
                 .setTitle(R.string.dialog_title);
         builder.setPositiveButton(R.string.dialog_ok, (dialog, id) -> {
-            adapter.removeAllSelect();
-            adapter.notifyDataSetChanged();
+            viewModel.deleteAllItems("two");
         });
         builder.setNegativeButton(R.string.dialog_cancel, (dialog, id) -> {
             // User cancelled the dialog

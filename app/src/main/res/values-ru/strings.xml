@@ -33,4 +33,7 @@
     <string name="restorePurchase">Восстановить покупки</string>
     <string name="main_items">Основные предметы</string>
     <string name="compound_items">Составные предметы</string>
+    <string name="choose_what_you_want_to_destroy">Выберите, что хотите разрушить</string>
+    <string name="all_explored">Все изучены</string>
+    <string name="banner_ad_unit_id">ca-app-pub-9023638698585769/4959252606</string>
 </resources>
