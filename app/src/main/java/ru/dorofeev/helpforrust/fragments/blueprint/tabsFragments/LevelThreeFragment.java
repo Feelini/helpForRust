@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
 import ru.dorofeev.helpforrust.R;
 import ru.dorofeev.helpforrust.fragments.blueprint.BlueprintFragmentViewModel;
 import ru.dorofeev.helpforrust.fragments.blueprint.BlueprintsAdapter;
@@ -147,7 +148,8 @@ public class LevelThreeFragment extends Fragment {
         builder.setMessage(R.string.dialog_message)
                 .setTitle(R.string.dialog_title);
         builder.setPositiveButton(R.string.dialog_ok, (dialog, id) -> {
-            viewModel.deleteAllItems("two");
+            viewModel.deleteAllItems("three");
+            exploreBtn.setText(R.string.explore);
         });
         builder.setNegativeButton(R.string.dialog_cancel, (dialog, id) -> {
             // User cancelled the dialog

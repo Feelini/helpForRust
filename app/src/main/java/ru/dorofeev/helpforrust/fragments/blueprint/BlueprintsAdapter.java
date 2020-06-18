@@ -132,11 +132,12 @@ public class BlueprintsAdapter extends RecyclerView.Adapter<BlueprintsAdapter.Bl
                 }
             });
             if (isAdded){
-                itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.toolbarText));
+                blueprintImage.setBackgroundColor(ContextCompat.getColor(context, R.color.toolbarText));
+//                itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.toolbarText));
             } else if (isSelected){
-                itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.bgBottomNavBar));
+                blueprintImage.setBackgroundColor(ContextCompat.getColor(context, R.color.bgBottomNavBar));
             } else {
-                itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.bgPrimary));
+                blueprintImage.setBackgroundColor(ContextCompat.getColor(context, R.color.bgPrimary));
             }
         }
     }

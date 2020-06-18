@@ -91,7 +91,6 @@ public class LevelTwoFragment extends Fragment {
                     viewModel.saveNewItem(selected, "two");
                     exploreBtn.setText(getString(R.string.remove));
                 }
-                adapter.notifyDataSetChanged();
             }
         });
 

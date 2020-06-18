@@ -62,7 +62,7 @@ public class RaidCalculatorFragment extends Fragment {
     TextView multiplier;
     @BindView(R.id.emptyList)
     TextView emptyList;
-//    @BindView(R.id.adView)
+    //    @BindView(R.id.adView)
 //    AdView adView;
     private RaidCalculatorFragmentViewModel viewModel;
     private static RaidCalculatorFragment instance;
@@ -188,12 +188,12 @@ public class RaidCalculatorFragment extends Fragment {
         }
     }
 
-    private void hideWeaponsList(){
+    private void hideWeaponsList() {
         weaponsList.setVisibility(View.GONE);
         emptyList.setVisibility(View.VISIBLE);
     }
 
-    private void displayWeaponsList(){
+    private void displayWeaponsList() {
         weaponsList.setVisibility(View.VISIBLE);
         emptyList.setVisibility(View.INVISIBLE);
     }
@@ -301,6 +301,7 @@ public class RaidCalculatorFragment extends Fragment {
 
     private List<ItemCompound> getItemsCompound(List<ItemWithValue> itemWithValues, List<ItemCompound> itemsCompounds) {
         List<ItemCompound> itemCompoundList = new ArrayList<>();
+        List<ItemCompound> resultItemCompoundList = new ArrayList<>();
         for (ItemWithValue itemWithValue : itemWithValues) {
             for (ItemCompound itemCompound : itemsCompounds) {
                 if (itemCompound != null && itemWithValue != null) {
@@ -313,7 +314,37 @@ public class RaidCalculatorFragment extends Fragment {
                 }
             }
         }
-        return itemCompoundList;
+        List<ItemCompound> itemCompoundList1 = new ArrayList<>(itemCompoundList);
+        for (ItemCompound itemCompound : itemCompoundList1) {
+            for (ItemCompound itemCompound1 : itemsCompounds) {
+                if (itemCompound != null && itemCompound1 != null) {
+                    if (itemCompound.getItems_compound_id() == itemCompound1.getItems_id()) {
+                        ItemCompound itemCompound2 = new ItemCompound(itemCompound1.getId(),
+                                itemCompound1.getItems_compound_id(), itemCompound1.getItems_id(),
+                                itemCompound1.getValue_compound() * itemCompound.getValue_compound());
+                        itemCompoundList.add(itemCompound2);
+                    }
+                }
+            }
+        }
+        if (itemCompoundList.size() > 0) {
+            resultItemCompoundList.add(itemCompoundList.get(0));
+            for (int i = 1; i < itemCompoundList.size(); i++) {
+                boolean equals = false;
+                for (ItemCompound itemCompound: resultItemCompoundList) {
+                    if (itemCompoundList.get(i).getItems_id() == itemCompound.getItems_id()){
+                        int newValue = itemCompoundList.get(i).getValue_compound() + itemCompound.getValue_compound();
+                        itemCompound.setValue_compound(newValue);
+                        equals = true;
+                        break;
+                    }
+                }
+                if (!equals){
+                    resultItemCompoundList.add(itemCompoundList.get(i));
+                }
+            }
+        }
+        return resultItemCompoundList;
     }
 
     private List<ItemWithValue> getItemsWithValue(List<ItemWeapon> itemWeapons, List<Item> items) {

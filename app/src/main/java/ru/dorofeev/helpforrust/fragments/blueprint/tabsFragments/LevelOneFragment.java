@@ -15,17 +15,17 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 import ru.dorofeev.helpforrust.R;
 import ru.dorofeev.helpforrust.fragments.blueprint.BlueprintFragmentViewModel;
 import ru.dorofeev.helpforrust.fragments.blueprint.BlueprintsAdapter;
 import ru.dorofeev.helpforrust.models.Blueprint;
+import ru.dorofeev.helpforrust.repo.database.CheckedItemEntity;
 
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-import ru.dorofeev.helpforrust.repo.database.CheckedItemEntity;
 
 public class LevelOneFragment extends Fragment {
 

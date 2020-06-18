@@ -44,7 +44,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutForExplore"
         android:layout_width="match_parent"
-        android:layout_height="85dp"
+        android:layout_height="100dp"
         android:background="@color/bgSecondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,10 +56,10 @@
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
             android:textSize="18sp"
+            android:text="@string/click_on_blueprint"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Click on blueprint"/>
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <LinearLayout
             android:id="@+id/scrab"
@@ -74,13 +74,14 @@
             <ImageView
                 android:id="@+id/scrabIcon"
                 android:src="@drawable/workbench1"
-                android:layout_width="20dp"
-                android:layout_height="20dp"/>
+                android:layout_width="30dp"
+                android:layout_height="30dp"/>
 
             <TextView
                 android:id="@+id/scrabCount"
                 android:textColor="@android:color/white"
                 android:text="@string/x300"
+                android:textSize="20sp"
                 android:layout_marginStart="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -100,13 +101,14 @@
             <ImageView
                 android:id="@+id/tableIcon"
                 android:src="@drawable/research_table"
-                android:layout_width="20dp"
-                android:layout_height="20dp" />
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
 
             <TextView
                 android:id="@+id/tableCount"
                 android:textColor="@android:color/white"
                 android:layout_marginStart="5dp"
+                android:textSize="20sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="x75" />
@@ -116,7 +118,7 @@
         <Button
             android:id="@+id/exploreBtn"
             android:layout_width="100dp"
-            android:layout_height="25dp"
+            android:layout_height="30dp"
             android:background="@drawable/btn_bg"
             android:text="@string/explore"
             android:textAllCaps="false"
@@ -132,6 +134,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/chance"
+            android:textSize="16sp"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -142,6 +145,7 @@
             android:id="@+id/chanceNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="16sp"
             android:layout_marginStart="5dp"
             android:layout_marginBottom="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
