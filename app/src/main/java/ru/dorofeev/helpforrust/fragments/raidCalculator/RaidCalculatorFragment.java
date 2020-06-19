@@ -328,8 +328,8 @@ public class RaidCalculatorFragment extends Fragment {
     }
 
     private List<ItemCompound> getItemsCompound(List<ItemWithValue> itemWithValues, List<ItemCompound> itemsCompounds) {
+        // получаем список ItemCompound для нашего списка Items
         List<ItemCompound> itemCompoundList = new ArrayList<>();
-        List<ItemCompound> resultItemCompoundList = new ArrayList<>();
         for (ItemWithValue itemWithValue : itemWithValues) {
             for (ItemCompound itemCompound : itemsCompounds) {
                 if (itemCompound != null && itemWithValue != null) {
@@ -342,37 +342,52 @@ public class RaidCalculatorFragment extends Fragment {
                 }
             }
         }
-        List<ItemCompound> itemCompoundList1 = new ArrayList<>(itemCompoundList);
-        for (ItemCompound itemCompound : itemCompoundList1) {
-            for (ItemCompound itemCompound1 : itemsCompounds) {
-                if (itemCompound != null && itemCompound1 != null) {
-                    if (itemCompound.getItems_compound_id() == itemCompound1.getItems_id()) {
-                        ItemCompound itemCompound2 = new ItemCompound(itemCompound1.getId(),
-                                itemCompound1.getItems_compound_id(), itemCompound1.getItems_id(),
-                                itemCompound1.getValue_compound() * itemCompound.getValue_compound());
-                        itemCompoundList.add(itemCompound2);
+
+        // складываем повторки в списке ItemCompound
+        List<ItemCompound> itemCompoundsUnique = getUniqueList(itemCompoundList);
+
+        // получаем список subItemCompound для нашего списка ItemCompound
+        List<ItemCompound> subItemCompoundList = new ArrayList<>();
+        for (ItemCompound itemCompound : itemCompoundsUnique) {
+            for (ItemCompound itemCompoundListItem : itemsCompounds) {
+                if (itemCompound != null && itemCompoundListItem != null) {
+                    if (itemCompound.getItems_compound_id() == itemCompoundListItem.getItems_id()) {
+                        ItemCompound itemCompound1 = new ItemCompound(itemCompoundListItem.getId(),
+                                itemCompoundListItem.getItems_compound_id(), itemCompoundListItem.getItems_id(),
+                                itemCompoundListItem.getValue_compound() * itemCompound.getValue_compound());
+                        subItemCompoundList.add(itemCompound1);
                     }
                 }
             }
         }
-        if (itemCompoundList.size() > 0) {
-            resultItemCompoundList.add(itemCompoundList.get(0));
-            for (int i = 1; i < itemCompoundList.size(); i++) {
-                boolean equals = false;
-                for (ItemCompound itemCompound : resultItemCompoundList) {
-                    if (itemCompoundList.get(i).getItems_id() == itemCompound.getItems_id()) {
-                        int newValue = itemCompoundList.get(i).getValue_compound() + itemCompound.getValue_compound();
-                        itemCompound.setValue_compound(newValue);
-                        equals = true;
-                        break;
-                    }
-                }
-                if (!equals) {
-                    resultItemCompoundList.add(itemCompoundList.get(i));
+
+        // складываем повторки в списке subItemCompound
+        List<ItemCompound> subItemCompoundsUnique = getUniqueList(subItemCompoundList);
+
+
+        // складываем списки subItemCompoundsUnique и itemCompoundsUnique и складываем повторки, результат в return
+        itemCompoundsUnique.addAll(subItemCompoundsUnique);
+
+        return getUniqueList(itemCompoundsUnique);
+    }
+
+    private List<ItemCompound> getUniqueList(List<ItemCompound> itemCompoundList){
+        List<ItemCompound> itemCompoundsUnique = new ArrayList<>();
+        itemCompoundsUnique.add(itemCompoundList.get(0));
+        for (ItemCompound itemCompound: itemCompoundList){
+            boolean isExist = false;
+            for (ItemCompound itemCompoundUnique: itemCompoundsUnique){
+                if (itemCompound.getItems_compound_id() == itemCompoundUnique.getItems_compound_id()){
+                    int newValue = itemCompound.getValue_compound() + itemCompoundUnique.getValue_compound();
+                    itemCompoundUnique.setValue_compound(newValue);
+                    isExist = true;
                 }
             }
+            if (!isExist){
+                itemCompoundsUnique.add(itemCompound);
+            }
         }
-        return resultItemCompoundList;
+        return itemCompoundsUnique;
     }
 
     private List<ItemWithValue> getItemsWithValue(List<ItemWeapon> itemWeapons, List<Item> items) {

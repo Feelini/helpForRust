@@ -80,7 +80,7 @@ public class WeaponsAdapter extends RecyclerView.Adapter<WeaponsAdapter.WeaponsV
             if (raidCalculatorListItem.getItemWithValues() != null &&
                     raidCalculatorListItem.getItemWithValues().size() > 0){
                 itemList.setAdapter(new ItemsAdapter(raidCalculatorListItem.getItemWithValues(), context, multiplier));
-                itemCompoundTitle.setVisibility(View.VISIBLE);
+                itemTitle.setVisibility(View.VISIBLE);
             } else {
                 itemTitle.setVisibility(View.GONE);
             }
