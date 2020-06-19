@@ -15,6 +15,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -41,6 +45,8 @@ public class LevelThreeFragment extends Fragment {
     TextView blueprintName;
     @BindView(R.id.deleteBtn)
     ImageView deleteBtn;
+    @BindView(R.id.adView)
+    AdView adView;
     private static LevelThreeFragment instance;
     private static BlueprintFragmentViewModel viewModel;
     private BlueprintsAdapter adapter;
@@ -81,6 +87,16 @@ public class LevelThreeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                adView.setVisibility(View.VISIBLE);
+            }
+        });
 
         exploreBtn.setOnClickListener(v -> {
             if (selected != -1) {

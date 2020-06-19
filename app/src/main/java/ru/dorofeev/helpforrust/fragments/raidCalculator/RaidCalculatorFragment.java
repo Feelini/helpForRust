@@ -14,9 +14,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-//import com.google.android.gms.ads.AdRequest;
-//import com.google.android.gms.ads.AdView;
-//import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -62,8 +65,8 @@ public class RaidCalculatorFragment extends Fragment {
     TextView multiplier;
     @BindView(R.id.emptyList)
     TextView emptyList;
-    //    @BindView(R.id.adView)
-//    AdView adView;
+    @BindView(R.id.adView)
+    AdView adView;
     private RaidCalculatorFragmentViewModel viewModel;
     private static RaidCalculatorFragment instance;
     private Unbinder unbinder;
@@ -107,9 +110,15 @@ public class RaidCalculatorFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
-//        MobileAds.initialize(getContext());
-//        AdRequest adRequest = new AdRequest.Builder().build();
-//        adView.loadAd(adRequest);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                adView.setVisibility(View.VISIBLE);
+            }
+        });
         viewModel.fetchRaidCalculator();
         hideWeaponsList();
 
@@ -331,15 +340,15 @@ public class RaidCalculatorFragment extends Fragment {
             resultItemCompoundList.add(itemCompoundList.get(0));
             for (int i = 1; i < itemCompoundList.size(); i++) {
                 boolean equals = false;
-                for (ItemCompound itemCompound: resultItemCompoundList) {
-                    if (itemCompoundList.get(i).getItems_id() == itemCompound.getItems_id()){
+                for (ItemCompound itemCompound : resultItemCompoundList) {
+                    if (itemCompoundList.get(i).getItems_id() == itemCompound.getItems_id()) {
                         int newValue = itemCompoundList.get(i).getValue_compound() + itemCompound.getValue_compound();
                         itemCompound.setValue_compound(newValue);
                         equals = true;
                         break;
                     }
                 }
-                if (!equals){
+                if (!equals) {
                     resultItemCompoundList.add(itemCompoundList.get(i));
                 }
             }

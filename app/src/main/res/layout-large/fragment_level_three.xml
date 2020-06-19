@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -31,6 +32,19 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/bgFurnace"
+        android:visibility="gone"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id_test"
+        ads:layout_constraintTop_toBottomOf="@id/blueprintToolbar"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintEnd_toEndOf="parent">
+    </com.google.android.gms.ads.AdView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/blueprintList"
         android:layout_width="match_parent"
@@ -38,7 +52,7 @@
         android:background="@color/bgPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/blueprintToolbar"
+        app:layout_constraintTop_toBottomOf="@id/adView"
         app:layout_constraintBottom_toTopOf="@id/layoutForExplore"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout

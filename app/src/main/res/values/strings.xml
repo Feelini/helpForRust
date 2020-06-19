@@ -35,5 +35,6 @@
     <string name="compound_items">Compound items</string>
     <string name="choose_what_you_want_to_destroy">Choose what you want to destroy</string>
     <string name="all_explored">All explored</string>
-    <string name="banner_ad_unit_id">ca-app-pub-9023638698585769/4959252606</string>
+    <string name="banner_ad_unit_id_test">ca-app-pub-9023638698585769/4984266272</string>
+<!--    <string name="banner_ad_unit_id_test">ca-app-pub-3940256099942544/6300978111</string>-->
 </resources>

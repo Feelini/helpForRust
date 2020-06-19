@@ -17,6 +17,10 @@ import ru.dorofeev.helpforrust.fragments.furnace.tabsFragments.MvkFragment;
 import ru.dorofeev.helpforrust.fragments.furnace.tabsFragments.SulfurFragment;
 import ru.dorofeev.helpforrust.models.Furnace;
 import ru.dorofeev.helpforrust.utils.ViewModelFactory;
+
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -30,6 +34,8 @@ public class FurnaceFragment extends Fragment {
 
     @BindView(R.id.tabsFurnace)
     TabLayout tabsFurnace;
+    @BindView(R.id.adView)
+    AdView adView;
     private FurnaceFragmentViewModel viewModel;
     private Unbinder unbinder;
     private List<Furnace> furnaceIron = new ArrayList<>();
@@ -69,6 +75,17 @@ public class FurnaceFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                adView.setVisibility(View.VISIBLE);
+            }
+        });
+
         viewModel.fetchFurnace();
 
         tabsFurnace.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
