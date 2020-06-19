@@ -21,6 +21,7 @@ import ru.dorofeev.helpforrust.utils.ViewModelFactory;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -42,6 +43,8 @@ public class FurnaceFragment extends Fragment {
     private List<Furnace> furnaceSulfur = new ArrayList<>();
     private List<Furnace> furnaceMvk = new ArrayList<>();
     private static FurnaceFragment instance;
+    private InterstitialAd interstitialAd;
+    private boolean isAdShowing = false;
 
     public static FurnaceFragment getInstance(){
         if (instance == null){
@@ -53,6 +56,7 @@ public class FurnaceFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isAdShowing = false;
         ViewModelFactory viewModelFactory = new ViewModelFactory(getActivity().getApplication());
         viewModel = new ViewModelProvider(this, viewModelFactory).get(FurnaceFragmentViewModel.class);
     }
@@ -83,6 +87,27 @@ public class FurnaceFragment extends Fragment {
             public void onAdLoaded() {
                 super.onAdLoaded();
                 adView.setVisibility(View.VISIBLE);
+            }
+        });
+
+        interstitialAd = new InterstitialAd(getContext());
+        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712"); // test
+//        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712"); // release
+        interstitialAd.loadAd(new AdRequest.Builder().build());
+        interstitialAd.setAdListener(new AdListener(){
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                if (!isAdShowing) {
+                    interstitialAd.show();
+                    isAdShowing = true;
+                }
+            }
+
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                interstitialAd.loadAd(new AdRequest.Builder().build());
             }
         });
 

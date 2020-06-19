@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
@@ -79,6 +80,8 @@ public class RaidCalculatorFragment extends Fragment {
     private List<ItemCompoundWithValue> itemCompoundWithValues;
     private List<RaidCalculatorListItem> raidCalculatorListItems;
     private List<WeaponsWithValue> weaponsWithValues = new ArrayList<>();
+    private InterstitialAd interstitialAd;
+    private boolean isAdShowing = false;
 
     public static RaidCalculatorFragment getInstance() {
         if (instance == null) {
@@ -90,6 +93,7 @@ public class RaidCalculatorFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isAdShowing = false;
         ViewModelFactory viewModelFactory = new ViewModelFactory(getActivity().getApplication());
         viewModel = new ViewModelProvider(this, viewModelFactory).get(RaidCalculatorFragmentViewModel.class);
     }
@@ -117,6 +121,17 @@ public class RaidCalculatorFragment extends Fragment {
             public void onAdLoaded() {
                 super.onAdLoaded();
                 adView.setVisibility(View.VISIBLE);
+            }
+        });
+        interstitialAd = new InterstitialAd(getContext());
+        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712"); // test
+//        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712"); // release
+        interstitialAd.loadAd(new AdRequest.Builder().build());
+        interstitialAd.setAdListener(new AdListener(){
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                interstitialAd.loadAd(new AdRequest.Builder().build());
             }
         });
         viewModel.fetchRaidCalculator();
@@ -291,6 +306,10 @@ public class RaidCalculatorFragment extends Fragment {
             case "Другое":
                 OtherFragment.getInstance().setSelectedItem(position);
                 break;
+        }
+        if (interstitialAd.isLoaded() && !isAdShowing){
+            interstitialAd.show();
+            isAdShowing = true;
         }
     }
 

@@ -16,6 +16,10 @@ import ru.dorofeev.helpforrust.fragments.blueprint.tabsFragments.LevelThreeFragm
 import ru.dorofeev.helpforrust.fragments.blueprint.tabsFragments.LevelTwoFragment;
 import ru.dorofeev.helpforrust.models.Blueprint;
 import ru.dorofeev.helpforrust.utils.ViewModelFactory;
+
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.material.tabs.TabLayout;
 
 import butterknife.BindView;
@@ -29,6 +33,8 @@ public class BlueprintFragment extends Fragment {
     private BlueprintFragmentViewModel viewModel;
     private Unbinder unbinder;
     private static BlueprintFragment instance;
+    private InterstitialAd interstitialAd;
+    private boolean isAdShowing = false;
 
     public static BlueprintFragment getInstance(){
         if (instance == null){
@@ -40,6 +46,7 @@ public class BlueprintFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isAdShowing = false;
         ViewModelFactory viewModelFactory = new ViewModelFactory(getActivity().getApplication());
         viewModel = new ViewModelProvider(this, viewModelFactory).get(BlueprintFragmentViewModel.class);
     }
@@ -54,6 +61,18 @@ public class BlueprintFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
+
+        interstitialAd = new InterstitialAd(getContext());
+        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712"); // test
+//        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712"); // release
+        interstitialAd.loadAd(new AdRequest.Builder().build());
+        interstitialAd.setAdListener(new AdListener(){
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                interstitialAd.loadAd(new AdRequest.Builder().build());
+            }
+        });
 
         tabsBlueprint.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -122,6 +141,10 @@ public class BlueprintFragment extends Fragment {
             case "Three":
                 LevelThreeFragment.getInstance().onBlueprintClick(position, blueprint);
                 break;
+        }
+        if (interstitialAd.isLoaded() && !isAdShowing){
+            interstitialAd.show();
+            isAdShowing = true;
         }
     }
 }
