@@ -80,15 +80,19 @@ public class WeaponsAdapter extends RecyclerView.Adapter<WeaponsAdapter.WeaponsV
             if (raidCalculatorListItem.getItemWithValues() != null &&
                     raidCalculatorListItem.getItemWithValues().size() > 0){
                 itemList.setAdapter(new ItemsAdapter(raidCalculatorListItem.getItemWithValues(), context, multiplier));
+                itemList.setVisibility(View.VISIBLE);
                 itemTitle.setVisibility(View.VISIBLE);
             } else {
                 itemTitle.setVisibility(View.GONE);
+                itemList.setVisibility(View.INVISIBLE);
             }
             if (raidCalculatorListItem.getItemCompoundWithValues() != null &&
                     raidCalculatorListItem.getItemCompoundWithValues().size() > 0){
                 itemCompoundList.setAdapter(new ItemsCompoundAdapter(raidCalculatorListItem.getItemCompoundWithValues(), context, multiplier));
+                itemCompoundList.setVisibility(View.VISIBLE);
                 itemCompoundTitle.setVisibility(View.VISIBLE);
             } else {
+                itemCompoundList.setVisibility(View.INVISIBLE);
                 itemCompoundTitle.setVisibility(View.GONE);
             }
         }

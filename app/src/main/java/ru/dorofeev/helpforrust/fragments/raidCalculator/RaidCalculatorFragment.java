@@ -124,8 +124,8 @@ public class RaidCalculatorFragment extends Fragment {
             }
         });
         interstitialAd = new InterstitialAd(getContext());
-        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712"); // test
-//        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712"); // release
+//        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712"); // test
+        interstitialAd.setAdUnitId("ca-app-pub-9023638698585769/2358102939"); // release
         interstitialAd.loadAd(new AdRequest.Builder().build());
         interstitialAd.setAdListener(new AdListener(){
             @Override
@@ -352,9 +352,22 @@ public class RaidCalculatorFragment extends Fragment {
             for (ItemCompound itemCompoundListItem : itemsCompounds) {
                 if (itemCompound != null && itemCompoundListItem != null) {
                     if (itemCompound.getItems_compound_id() == itemCompoundListItem.getItems_id()) {
-                        ItemCompound itemCompound1 = new ItemCompound(itemCompoundListItem.getId(),
-                                itemCompoundListItem.getItems_compound_id(), itemCompoundListItem.getItems_id(),
-                                itemCompoundListItem.getValue_compound() * itemCompound.getValue_compound());
+                        ItemCompound itemCompound1;
+                        if (itemCompoundListItem.getValue_compound() == 0 && itemCompoundListItem.getId() == 11){
+                            double newValue = 0.75 * itemCompound.getValue_compound();
+                            itemCompound1 = new ItemCompound(itemCompoundListItem.getId(),
+                                    itemCompoundListItem.getItems_compound_id(), itemCompoundListItem.getItems_id(),
+                                    Integer.parseInt(String.format("%.0f", newValue)));
+                        } else if (itemCompoundListItem.getValue_compound() == 0 && itemCompoundListItem.getId() == 12){
+                            double newValue = 0.25 * itemCompound.getValue_compound();
+                            itemCompound1 = new ItemCompound(itemCompoundListItem.getId(),
+                                    itemCompoundListItem.getItems_compound_id(), itemCompoundListItem.getItems_id(),
+                                    Integer.parseInt(String.format("%.0f", newValue)));
+                        } else {
+                            itemCompound1 = new ItemCompound(itemCompoundListItem.getId(),
+                                    itemCompoundListItem.getItems_compound_id(), itemCompoundListItem.getItems_id(),
+                                    itemCompoundListItem.getValue_compound() * itemCompound.getValue_compound());
+                        }
                         subItemCompoundList.add(itemCompound1);
                     }
                 }
@@ -373,18 +386,21 @@ public class RaidCalculatorFragment extends Fragment {
 
     private List<ItemCompound> getUniqueList(List<ItemCompound> itemCompoundList){
         List<ItemCompound> itemCompoundsUnique = new ArrayList<>();
-        itemCompoundsUnique.add(itemCompoundList.get(0));
-        for (ItemCompound itemCompound: itemCompoundList){
-            boolean isExist = false;
-            for (ItemCompound itemCompoundUnique: itemCompoundsUnique){
-                if (itemCompound.getItems_compound_id() == itemCompoundUnique.getItems_compound_id()){
-                    int newValue = itemCompound.getValue_compound() + itemCompoundUnique.getValue_compound();
-                    itemCompoundUnique.setValue_compound(newValue);
-                    isExist = true;
+        if (itemCompoundList != null && itemCompoundList.size() > 0) {
+            itemCompoundsUnique.add(itemCompoundList.get(0));
+            for (int i = 1; i < itemCompoundList.size(); i++){
+//            for (ItemCompound itemCompound : itemCompoundList) {
+                boolean isExist = false;
+                for (ItemCompound itemCompoundUnique : itemCompoundsUnique) {
+                    if (itemCompoundList.get(i).getItems_compound_id() == itemCompoundUnique.getItems_compound_id()) {
+                        int newValue = itemCompoundList.get(i).getValue_compound() + itemCompoundUnique.getValue_compound();
+                        itemCompoundUnique.setValue_compound(newValue);
+                        isExist = true;
+                    }
                 }
-            }
-            if (!isExist){
-                itemCompoundsUnique.add(itemCompound);
+                if (!isExist) {
+                    itemCompoundsUnique.add(itemCompoundList.get(i));
+                }
             }
         }
         return itemCompoundsUnique;

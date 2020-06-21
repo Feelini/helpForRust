@@ -8,9 +8,9 @@
     <string name="chance">Chance -</string>
     <string name="blueprints">Blueprints</string>
     <string name="furnace_info">Furnace Info</string>
-    <string name="iron">iron</string>
-    <string name="sulfur">sulfur</string>
-    <string name="mvk">MVK</string>
+    <string name="iron">Iron</string>
+    <string name="sulfur">Sulfur</string>
+    <string name="mvk">HQM</string>
     <string name="raid_calculator">Raid calculator</string>
     <string name="purchase">Purchase</string>
     <string name="doors">Doors</string>
@@ -24,7 +24,7 @@
     <string name="x300">x300</string>
     <string name="x1000">x1000</string>
     <string name="click_on_blueprint">Click on blueprint</string>
-    <string name="dialog_message">Clear list of studied drawings?</string>
+    <string name="dialog_message">Clear the list of learned blueprints?</string>
     <string name="dialog_title">Attention</string>
     <string name="dialog_ok">Yes</string>
     <string name="dialog_cancel">No</string>
@@ -34,7 +34,8 @@
     <string name="main_items">Main items</string>
     <string name="compound_items">Compound items</string>
     <string name="choose_what_you_want_to_destroy">Choose what you want to destroy</string>
-    <string name="all_explored">All explored</string>
+    <string name="all_explored">All studied</string>
+    <string name="removeAds">Advertisement is an important part of the application development. You can disable ads for support, development and comfortable use of the application. Hope for your understanding.</string>
     <string name="banner_ad_unit_id_test">ca-app-pub-9023638698585769/4984266272</string>
 <!--    <string name="banner_ad_unit_id_test">ca-app-pub-3940256099942544/6300978111</string>-->
 </resources>

@@ -91,8 +91,8 @@ public class FurnaceFragment extends Fragment {
         });
 
         interstitialAd = new InterstitialAd(getContext());
-        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712"); // test
-//        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712"); // release
+//        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712"); // test
+        interstitialAd.setAdUnitId("ca-app-pub-9023638698585769/2358102939"); // release
         interstitialAd.loadAd(new AdRequest.Builder().build());
         interstitialAd.setAdListener(new AdListener(){
             @Override

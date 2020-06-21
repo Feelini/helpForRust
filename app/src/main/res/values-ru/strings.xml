@@ -8,9 +8,9 @@
     <string name="chance">Шанс -</string>
     <string name="blueprints">Blueprints</string>
     <string name="furnace_info">Furnace Info</string>
-    <string name="iron">iron</string>
-    <string name="sulfur">sulfur</string>
-    <string name="mvk">MVK</string>
+    <string name="iron">Железо</string>
+    <string name="sulfur">Сера</string>
+    <string name="mvk">МВК</string>
     <string name="raid_calculator">Raid calculator</string>
     <string name="purchase">Purchase</string>
     <string name="doors">Двери</string>
@@ -23,7 +23,7 @@
     <string name="x75">x75</string>
     <string name="x300">x300</string>
     <string name="x1000">x1000</string>
-    <string name="click_on_blueprint">Выберите чертеж</string>
+    <string name="click_on_blueprint">Нажмите на чертеж</string>
     <string name="dialog_message">Очистить список изученных чертежей?</string>
     <string name="dialog_title">Внимание</string>
     <string name="dialog_ok">Да</string>
@@ -34,7 +34,8 @@
     <string name="main_items">Основные предметы</string>
     <string name="compound_items">Составные предметы</string>
     <string name="choose_what_you_want_to_destroy">Выберите, что хотите разрушить</string>
-    <string name="all_explored">Все изучены</string>
+    <string name="all_explored">Все изучено</string>
+    <string name="removeAds">Реклама является важной частью развития приложения. Для поддержки, развития и комфортного использования приложения Вы можете отключить рекламу. Надеемся на Ваше понимание.</string>
     <string name="banner_ad_unit_id_test">ca-app-pub-9023638698585769/4984266272</string>
 <!--    <string name="banner_ad_unit_id_test">ca-app-pub-3940256099942544/6300978111</string>-->
 </resources>
