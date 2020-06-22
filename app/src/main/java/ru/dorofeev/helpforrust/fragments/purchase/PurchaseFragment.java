@@ -1,5 +1,6 @@
 package ru.dorofeev.helpforrust.fragments.purchase;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -44,10 +45,26 @@ public class PurchaseFragment extends Fragment {
     private String mSkuId = "remove_ads";
     private BillingClient billingClient;
     private Map<String, SkuDetails> mSkuDetailsMap = new HashMap<>();
+    private static RemoveAdsListener removeAdsListener;
+    private Context context;
+
+    public interface RemoveAdsListener{
+        void removeAds();
+    }
 
     public static PurchaseFragment getInstance() {
         if (instance == null) {
             instance = new PurchaseFragment();
+        }
+        return instance;
+    }
+
+    public static PurchaseFragment getInstance(Context context) {
+        if (instance == null) {
+            instance = new PurchaseFragment();
+        }
+        if (context instanceof RemoveAdsListener){
+            removeAdsListener = (RemoveAdsListener) context;
         }
         return instance;
     }
@@ -140,6 +157,9 @@ public class PurchaseFragment extends Fragment {
     private void payComplete() {
         purchaseText.setText(getString(R.string.thanks));
         adsOff.setClickable(false);
+        if (removeAdsListener != null){
+            removeAdsListener.removeAds();
+        }
 //        Toast.makeText(getContext(), "Pay complete", Toast.LENGTH_SHORT).show();
     }
 }

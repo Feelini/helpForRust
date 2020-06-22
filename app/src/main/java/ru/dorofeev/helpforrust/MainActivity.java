@@ -21,7 +21,7 @@ import ru.dorofeev.helpforrust.models.Blueprint;
 import ru.dorofeev.helpforrust.models.Subject;
 
 public class MainActivity extends AppCompatActivity implements SubjectAdapter.OnSubjectClickListener,
-        BlueprintsAdapter.OnBlueprintClickListener {
+        BlueprintsAdapter.OnBlueprintClickListener, PurchaseFragment.RemoveAdsListener {
 
     @BindView(R.id.fragmentContainer)
     FrameLayout fragmentContainer;
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements SubjectAdapter.On
 
     private void showPurchaseFragment(){
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContainer, PurchaseFragment.getInstance(), PurchaseFragment.class.getName())
+                .replace(R.id.fragmentContainer, PurchaseFragment.getInstance(this), PurchaseFragment.class.getName())
                 .commit();
     }
 
@@ -105,5 +105,11 @@ public class MainActivity extends AppCompatActivity implements SubjectAdapter.On
     @Override
     public void onBlueprintClick(Blueprint blueprint, int position, String type) {
         BlueprintFragment.getInstance().onBlueprintClick(blueprint, position, type);
+    }
+
+    @Override
+    public void removeAds() {
+        BlueprintFragment.getInstance().removeAds();
+        FurnaceFragment.getInstance().removeAds();
     }
 }

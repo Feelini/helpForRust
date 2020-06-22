@@ -173,4 +173,8 @@ public class LevelTwoFragment extends Fragment {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    public void removeAds(){
+        adView.setVisibility(View.GONE);
+    }
 }

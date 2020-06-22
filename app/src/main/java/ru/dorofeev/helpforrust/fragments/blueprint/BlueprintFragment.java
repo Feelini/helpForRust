@@ -35,6 +35,7 @@ public class BlueprintFragment extends Fragment {
     private static BlueprintFragment instance;
     private InterstitialAd interstitialAd;
     private boolean isAdShowing = false;
+    private boolean isPay = false;
 
     public static BlueprintFragment getInstance(){
         if (instance == null){
@@ -46,7 +47,11 @@ public class BlueprintFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        isAdShowing = false;
+        if (!isPay) {
+            isAdShowing = false;
+        } else {
+            isAdShowing = true;
+        }
         ViewModelFactory viewModelFactory = new ViewModelFactory(getActivity().getApplication());
         viewModel = new ViewModelProvider(this, viewModelFactory).get(BlueprintFragmentViewModel.class);
     }
@@ -146,5 +151,12 @@ public class BlueprintFragment extends Fragment {
             interstitialAd.show();
             isAdShowing = true;
         }
+    }
+
+    public void removeAds(){
+        isPay = true;
+        LevelOneFragment.getInstance().removeAds();
+        LevelTwoFragment.getInstance().removeAds();
+        LevelThreeFragment.getInstance().removeAds();
     }
 }

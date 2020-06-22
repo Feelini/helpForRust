@@ -82,6 +82,7 @@ public class RaidCalculatorFragment extends Fragment {
     private List<WeaponsWithValue> weaponsWithValues = new ArrayList<>();
     private InterstitialAd interstitialAd;
     private boolean isAdShowing = false;
+    private boolean isPay = false;
 
     public static RaidCalculatorFragment getInstance() {
         if (instance == null) {
@@ -93,7 +94,11 @@ public class RaidCalculatorFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        isAdShowing = false;
+        if (isPay) {
+            isAdShowing = false;
+        } else {
+            isAdShowing = true;
+        }
         ViewModelFactory viewModelFactory = new ViewModelFactory(getActivity().getApplication());
         viewModel = new ViewModelProvider(this, viewModelFactory).get(RaidCalculatorFragmentViewModel.class);
     }
@@ -461,5 +466,10 @@ public class RaidCalculatorFragment extends Fragment {
             }
         }
         return weaponsSubjectsById;
+    }
+
+    public void removeAds(){
+        isPay = true;
+        adView.setVisibility(View.GONE);
     }
 }

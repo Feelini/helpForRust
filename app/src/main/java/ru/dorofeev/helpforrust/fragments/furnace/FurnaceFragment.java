@@ -45,6 +45,7 @@ public class FurnaceFragment extends Fragment {
     private static FurnaceFragment instance;
     private InterstitialAd interstitialAd;
     private boolean isAdShowing = false;
+    private boolean isPay = false;
 
     public static FurnaceFragment getInstance(){
         if (instance == null){
@@ -56,7 +57,11 @@ public class FurnaceFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        isAdShowing = false;
+        if (!isPay) {
+            isAdShowing = false;
+        } else {
+            isAdShowing = true;
+        }
         ViewModelFactory viewModelFactory = new ViewModelFactory(getActivity().getApplication());
         viewModel = new ViewModelProvider(this, viewModelFactory).get(FurnaceFragmentViewModel.class);
     }
@@ -181,5 +186,10 @@ public class FurnaceFragment extends Fragment {
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.blueprintListContainer, MvkFragment.getInstance(furnaceMvk), MvkFragment.class.getName())
                 .commit();
+    }
+
+    public void removeAds(){
+        isPay = true;
+        adView.setVisibility(View.GONE);
     }
 }
