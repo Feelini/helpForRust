@@ -2,32 +2,15 @@ package ru.dorofeev.helpforrust.fragments.purchase;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import com.android.billingclient.api.BillingClient;
-import com.android.billingclient.api.BillingClientStateListener;
-import com.android.billingclient.api.BillingFlowParams;
-import com.android.billingclient.api.BillingResult;
-import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesUpdatedListener;
-import com.android.billingclient.api.SkuDetails;
-import com.android.billingclient.api.SkuDetailsParams;
-import com.android.billingclient.api.SkuDetailsResponseListener;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,14 +25,10 @@ public class PurchaseFragment extends Fragment {
     @BindView(R.id.purchaseText)
     TextView purchaseText;
     private Unbinder unbinder;
-    private String mSkuId = "remove_ads";
-    private BillingClient billingClient;
-    private Map<String, SkuDetails> mSkuDetailsMap = new HashMap<>();
-    private static RemoveAdsListener removeAdsListener;
-    private Context context;
+    private static RemoveAdsClickListener removeAdsClickListener;
 
-    public interface RemoveAdsListener{
-        void removeAds();
+    public interface RemoveAdsClickListener{
+        void removeAdsClick();
     }
 
     public static PurchaseFragment getInstance() {
@@ -63,8 +42,8 @@ public class PurchaseFragment extends Fragment {
         if (instance == null) {
             instance = new PurchaseFragment();
         }
-        if (context instanceof RemoveAdsListener){
-            removeAdsListener = (RemoveAdsListener) context;
+        if (context instanceof RemoveAdsClickListener){
+            removeAdsClickListener = (RemoveAdsClickListener) context;
         }
         return instance;
     }
@@ -80,86 +59,23 @@ public class PurchaseFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
 
-        initBilling();
-
-        adsOff.setOnClickListener(v -> launchBilling(mSkuId));
+        adsOff.setOnClickListener(v -> {
+            if (removeAdsClickListener != null){
+                removeAdsClickListener.removeAdsClick();
+            }
+        });
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (unbinder != null){
+        if (unbinder != null) {
             unbinder.unbind();
         }
     }
 
-
-    private void initBilling() {
-        billingClient = BillingClient.newBuilder(getContext()).setListener((billingResult, list) -> {
-            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && list != null) {
-                payComplete();
-            }
-        }).build();
-        billingClient.startConnection(new BillingClientStateListener() {
-            @Override
-            public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                    //below you can query information about products and purchase
-                    querySkuDetails(); //query for products
-                    List<Purchase> purchasesList = queryPurchases(); //query for purchases
-
-                    //if the purchase has already been made to give the goods
-                    for (int i = 0; i < purchasesList.size(); i++) {
-                        String purchaseId = purchasesList.get(i).getSku();
-                        if(TextUtils.equals(mSkuId, purchaseId)) {
-                            payComplete();
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onBillingServiceDisconnected() {
-                //here when something went wrong, e.g. no internet connection
-            }
-        });
-    }
-
-    private void querySkuDetails() {
-        SkuDetailsParams.Builder skuDetailsParamsBuilder = SkuDetailsParams.newBuilder();
-        List<String> skuList = new ArrayList<>();
-        skuList.add(mSkuId);
-        skuDetailsParamsBuilder.setSkusList(skuList).setType(BillingClient.SkuType.INAPP);
-        billingClient.querySkuDetailsAsync(skuDetailsParamsBuilder.build(), new SkuDetailsResponseListener() {
-            @Override
-            public void onSkuDetailsResponse(@NonNull BillingResult billingResult, @Nullable List<SkuDetails> list) {
-                if (billingResult.getResponseCode() == 0) {
-                    for (SkuDetails skuDetails : list) {
-                        mSkuDetailsMap.put(skuDetails.getSku(), skuDetails);
-                    }
-                }
-            }
-        });
-    }
-
-    private List<Purchase> queryPurchases() {
-        Purchase.PurchasesResult purchasesResult = billingClient.queryPurchases(BillingClient.SkuType.INAPP);
-        return purchasesResult.getPurchasesList();
-    }
-
-    public void launchBilling(String skuId) {
-        BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
-                .setSkuDetails(mSkuDetailsMap.get(skuId))
-                .build();
-        billingClient.launchBillingFlow(getActivity(), billingFlowParams);
-    }
-
-    private void payComplete() {
+    public void payComplete(){
         purchaseText.setText(getString(R.string.thanks));
         adsOff.setClickable(false);
-        if (removeAdsListener != null){
-            removeAdsListener.removeAds();
-        }
-//        Toast.makeText(getContext(), "Pay complete", Toast.LENGTH_SHORT).show();
     }
 }
