@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements SubjectAdapter.On
     }
 
     private void payComplete() {
-        PurchaseFragment.getInstance().payComplete();
+//        PurchaseFragment.getInstance().payComplete();
         removeAds();
 //        Toast.makeText(getContext(), "Pay complete", Toast.LENGTH_SHORT).show();
     }
