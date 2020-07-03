@@ -54,6 +54,7 @@ public class LevelTwoFragment extends Fragment {
     private Unbinder unbinder;
     private int selected = -1;
     private CheckedItemEntity selectedItem;
+    private boolean payComplete = false;
 
     public static LevelTwoFragment getInstance(){
         if (instance == null) {
@@ -88,15 +89,17 @@ public class LevelTwoFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
 
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
-        adView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                adView.setVisibility(View.VISIBLE);
-            }
-        });
+        if (!payComplete) {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            adView.loadAd(adRequest);
+            adView.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    super.onAdLoaded();
+                    adView.setVisibility(View.VISIBLE);
+                }
+            });
+        }
 
         exploreBtn.setOnClickListener(v -> {
             if (selected != -1) {
@@ -175,6 +178,7 @@ public class LevelTwoFragment extends Fragment {
     }
 
     public void removeAds(){
-        adView.setVisibility(View.GONE);
+        payComplete = true;
+//        adView.setVisibility(View.GONE);
     }
 }

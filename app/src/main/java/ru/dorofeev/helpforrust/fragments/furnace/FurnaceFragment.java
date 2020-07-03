@@ -85,15 +85,17 @@ public class FurnaceFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
 
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
-        adView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                adView.setVisibility(View.VISIBLE);
-            }
-        });
+        if (!isPay) {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            adView.loadAd(adRequest);
+            adView.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    super.onAdLoaded();
+                    adView.setVisibility(View.VISIBLE);
+                }
+            });
+        }
 
         interstitialAd = new InterstitialAd(getContext());
 //        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712"); // test
@@ -190,6 +192,6 @@ public class FurnaceFragment extends Fragment {
 
     public void removeAds(){
         isPay = true;
-        adView.setVisibility(View.GONE);
+//        adView.setVisibility(View.GONE);
     }
 }

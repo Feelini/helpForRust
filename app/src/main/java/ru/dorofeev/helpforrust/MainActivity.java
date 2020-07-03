@@ -3,6 +3,7 @@ package ru.dorofeev.helpforrust;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -190,9 +191,9 @@ public class MainActivity extends AppCompatActivity implements SubjectAdapter.On
     }
 
     private void payComplete() {
-//        PurchaseFragment.getInstance().payComplete();
-        removeAds();
-//        Toast.makeText(getContext(), "Pay complete", Toast.LENGTH_SHORT).show();
+        PurchaseFragment.getInstance().payComplete();
+//        removeAds();
+//        Toast.makeText(this, "Pay complete", Toast.LENGTH_SHORT).show();
     }
 
     public void launchBilling(String skuId) {

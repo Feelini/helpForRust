@@ -20,6 +20,7 @@ import ru.dorofeev.helpforrust.R;
 public class PurchaseFragment extends Fragment {
 
     private static PurchaseFragment instance;
+    private boolean payComplete = false;
     @BindView(R.id.adsOff)
     Button adsOff;
     @BindView(R.id.purchaseText)
@@ -59,11 +60,16 @@ public class PurchaseFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
 
-        adsOff.setOnClickListener(v -> {
-            if (removeAdsClickListener != null){
-                removeAdsClickListener.removeAdsClick();
-            }
-        });
+        if (!payComplete) {
+            adsOff.setOnClickListener(v -> {
+                if (removeAdsClickListener != null) {
+                    removeAdsClickListener.removeAdsClick();
+                }
+            });
+        } else {
+            purchaseText.setText(getString(R.string.thanks));
+            adsOff.setClickable(false);
+        }
     }
 
     @Override
@@ -75,7 +81,6 @@ public class PurchaseFragment extends Fragment {
     }
 
     public void payComplete(){
-        purchaseText.setText(getString(R.string.thanks));
-        adsOff.setClickable(false);
+        payComplete = true;
     }
 }
