@@ -127,7 +127,9 @@ public class RaidCalculatorFragment extends Fragment {
                 @Override
                 public void onAdLoaded() {
                     super.onAdLoaded();
-                    adView.setVisibility(View.VISIBLE);
+                    if (!isPay) {
+                        adView.setVisibility(View.VISIBLE);
+                    }
                 }
             });
         }
