@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements SubjectAdapter.On
 
     private void payComplete() {
         PurchaseFragment.getInstance().payComplete();
-//        removeAds();
+        removeAds();
 //        Toast.makeText(this, "Pay complete", Toast.LENGTH_SHORT).show();
     }
 

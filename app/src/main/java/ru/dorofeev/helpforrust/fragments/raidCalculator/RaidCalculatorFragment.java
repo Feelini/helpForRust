@@ -94,7 +94,7 @@ public class RaidCalculatorFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (isPay) {
+        if (!isPay) {
             isAdShowing = false;
         } else {
             isAdShowing = true;
@@ -119,15 +119,18 @@ public class RaidCalculatorFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
-        adView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                adView.setVisibility(View.VISIBLE);
-            }
-        });
+
+        if(!isPay) {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            adView.loadAd(adRequest);
+            adView.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    super.onAdLoaded();
+                    adView.setVisibility(View.VISIBLE);
+                }
+            });
+        }
         interstitialAd = new InterstitialAd(getContext());
 //        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712"); // test
         interstitialAd.setAdUnitId("ca-app-pub-9023638698585769/2358102939"); // release
