@@ -133,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements SubjectAdapter.On
     private void removeAds() {
         BlueprintFragment.getInstance().removeAds();
         FurnaceFragment.getInstance().removeAds();
+        RaidCalculatorFragment.getInstance().removeAds();
     }
 
     private void initBilling() {

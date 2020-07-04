@@ -473,6 +473,7 @@ public class RaidCalculatorFragment extends Fragment {
 
     public void removeAds(){
         isPay = true;
-        adView.setVisibility(View.GONE);
+        isAdShowing = true;
+//        adView.setVisibility(View.GONE);
     }
 }

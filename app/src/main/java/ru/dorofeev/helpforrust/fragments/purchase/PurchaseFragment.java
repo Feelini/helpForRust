@@ -68,7 +68,8 @@ public class PurchaseFragment extends Fragment {
             });
         } else {
             purchaseText.setText(getString(R.string.thanks));
-            adsOff.setClickable(false);
+//            adsOff.setClickable(false);
+            adsOff.setVisibility(View.GONE);
         }
     }
 
