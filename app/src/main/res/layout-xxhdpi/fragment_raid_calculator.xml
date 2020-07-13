@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/raidCalculatorToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bgToolbar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/raid_calculator"
+            android:textSize="22sp"
+            android:textColor="@color/toolbarText"
+            android:layout_gravity="center_horizontal"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/bgFurnace"
+        android:visibility="gone"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id_test"
+        ads:layout_constraintTop_toBottomOf="@id/raidCalculatorToolbar"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintEnd_toEndOf="parent">
+    </com.google.android.gms.ads.AdView>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/bgFurnace"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/adView"
+        ads:layout_constraintBottom_toTopOf="@id/countItems">
+
+        <TextView
+            android:id="@+id/emptyList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bgBottomTabs"
+            android:textSize="20sp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/toolbarText"
+            android:gravity="center_horizontal"
+            android:text="@string/choose_what_you_want_to_destroy"/>
+
+    </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/weaponsList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/bgFurnace"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/adView"
+        app:layout_constraintBottom_toTopOf="@id/countItems"/>
+
+    <RelativeLayout
+        android:id="@+id/countItems"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="@color/pickItem"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tabsSubjectList">
+
+        <LinearLayout
+            android:id="@+id/commonBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal"
+            android:background="@drawable/btn_common_background">
+
+            <ImageButton
+                android:id="@+id/buttonMinus"
+                android:layout_width="50dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="1dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/btn_background"
+                android:src="@drawable/ic_remove"/>
+
+            <ImageButton
+                android:id="@+id/buttonPlus"
+                android:layout_width="50dp"
+                android:layout_height="28dp"
+                android:layout_marginEnd="1dp"
+                android:layout_gravity="center_vertical"
+                android:textSize="20sp"
+                android:src="@drawable/ic_add"
+                android:background="@drawable/btn_background"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/multiplier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/commonBtn"
+            android:textColor="@android:color/white"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="25dp"
+            android:textSize="22sp"
+            android:text="@string/_1"/>
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/tabsSubjectList"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@color/bgPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tabsRaidCalculator"/>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabsRaidCalculator"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="@color/bgBottomTabs"
+        app:tabGravity="fill"
+        app:tabBackground="@drawable/tab_background"
+        app:tabTextColor="@android:color/black"
+        app:tabIndicator="@color/bgBottomTabs"
+        app:tabTextAppearance="@style/TabLayoutTextStyle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/doors"/>
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/walls"/>
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/windows"/>
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/other"/>
+
+    </com.google.android.material.tabs.TabLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
