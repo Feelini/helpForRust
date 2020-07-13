@@ -17,7 +17,7 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabsBlueprint"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="35dp"
         android:background="@drawable/tab_background"
         app:tabGravity="fill"
         app:tabTextColor="@android:color/black"

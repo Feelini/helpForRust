@@ -23,6 +23,8 @@ import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
+import com.yandex.metrica.YandexMetrica;
+import com.yandex.metrica.YandexMetricaConfig;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements SubjectAdapter.On
     private int currentMenu = R.id.menu_raid_calculator;
     private String mSkuId = "remove_ads";
     private BillingClient billingClient;
+    private String API_key = "142f2460-c2a4-4e0d-8967-34f69e746f60";
     private Map<String, SkuDetails> mSkuDetailsMap = new HashMap<>();
 
     @Override
@@ -60,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements SubjectAdapter.On
         unbinder = ButterKnife.bind(this);
 
         initBilling();
+        initMetrica();
 
         bottomMenu.setOnNavigationItemSelectedListener(listener);
         bottomMenu.setItemIconTintList(null);
@@ -207,5 +211,11 @@ public class MainActivity extends AppCompatActivity implements SubjectAdapter.On
     @Override
     public void removeAdsClick() {
         launchBilling(mSkuId);
+    }
+
+    private void initMetrica(){
+        YandexMetricaConfig config = YandexMetricaConfig.newConfigBuilder(API_key).build();
+        YandexMetrica.activate(getApplicationContext(), config);
+        YandexMetrica.enableActivityAutoTracking(getApplication());
     }
 }
