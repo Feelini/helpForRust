@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:background="@color/bgSecondary"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/itemImageLayout"
+        android:layout_width="105dp"
+        android:layout_height="145dp"
+        android:background="@color/toolbarText"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/weaponImage"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/beancan_grenade_image"/>
+
+        <TextView
+            android:id="@+id/weaponValue"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="10dp"
+            tools:text="6"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/itemsLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toEndOf="@id/itemImageLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/itemTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_items"
+            android:textSize="14sp"
+            android:textColor="@color/toolbarText"
+            android:layout_gravity="center_horizontal"/>
+
+        <GridView
+            android:id="@+id/itemList"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:numColumns="auto_fit"
+            android:columnWidth="70dp"/>
+
+        <TextView
+            android:id="@+id/itemCompoundTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/compound_items"
+            android:textSize="14sp"
+            android:textColor="@color/toolbarText"
+            android:layout_gravity="center_horizontal"/>
+
+        <GridView
+            android:id="@+id/itemCompoundList"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:numColumns="auto_fit"
+            android:columnWidth="70dp"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
