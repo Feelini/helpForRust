@@ -17,15 +17,25 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.dorofeev.helpforrust.R;
+import ru.dorofeev.helpforrust.models.InfoList;
 import ru.dorofeev.helpforrust.models.InfoListItem;
+import ru.dorofeev.helpforrust.models.ItemOfInfoListItem;
 
 public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.InfoViewHolder>  {
-    private List<InfoListItem> infoListItems;
+    private InfoList infoListList;
     private Context context;
+    private OnInfoListItemClickListener onInfoListItemClickListener;
 
-    public InfoAdapter(List<InfoListItem> infoListItems, Context context) {
-        this.infoListItems = infoListItems;
+    public interface OnInfoListItemClickListener{
+        void onInfoListItemClick(List<ItemOfInfoListItem> itemOfInfoListItemAndBuffs);
+    }
+
+    public InfoAdapter(InfoList infoListList, Context context) {
+        this.infoListList = infoListList;
         this.context = context;
+        if (context instanceof OnInfoListItemClickListener){
+            onInfoListItemClickListener = (OnInfoListItemClickListener) context;
+        }
     }
 
     @NonNull
@@ -37,12 +47,12 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.InfoViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull InfoAdapter.InfoViewHolder holder, int position) {
-        holder.bindData(infoListItems.get(position));
+        holder.bindData(infoListList.getInfoListItems().get(position));
     }
 
     @Override
     public int getItemCount() {
-        return infoListItems != null ? infoListItems.size() : 0;
+        return infoListList.getInfoListItems() != null ? infoListList.getInfoListItems().size() : 0;
     }
 
     public class InfoViewHolder extends RecyclerView.ViewHolder {
@@ -58,8 +68,23 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.InfoViewHolder
         }
 
         public void bindData(InfoListItem infoListItem) {
-            Picasso.get().load(infoListItem.getIconUrl()).into(infoItemImage);
-            itemTitle.setText(infoListItem.getName());
+            if (infoListItem != null) {
+                Picasso.get().load(infoListItem.getIconUrl()).into(infoItemImage);
+                switch (infoListItem.getName()) {
+                    case "teaAndBuffs":
+                        itemTitle.setText(R.string.tea_and_buffs);
+                        break;
+                }
+                itemView.setOnClickListener(v -> {
+                    if (onInfoListItemClickListener != null){
+                        switch (infoListItem.getName()){
+                            case "teaAndBuffs":
+                                onInfoListItemClickListener.onInfoListItemClick(infoListList.getItemOfInfoListItemAndBuffs());
+                                break;
+                        }
+                    }
+                });
+            }
         }
     }
 }

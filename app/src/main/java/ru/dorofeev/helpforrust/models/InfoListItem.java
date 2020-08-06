@@ -2,24 +2,24 @@ package ru.dorofeev.helpforrust.models;
 
 public class InfoListItem {
 
-    private String id;
+    private long id;
     private String iconUrl;
     private String name;
 
     public InfoListItem() {
     }
 
-    public InfoListItem(String id, String iconUrl, String name) {
+    public InfoListItem(long id, String iconUrl, String name) {
         this.id = id;
         this.iconUrl = iconUrl;
         this.name = name;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

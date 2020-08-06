@@ -3,7 +3,6 @@ package ru.dorofeev.helpforrust;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,15 +33,19 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import ru.dorofeev.helpforrust.fragments.info.InfoAdapter;
 import ru.dorofeev.helpforrust.fragments.info.InfoFragment;
+import ru.dorofeev.helpforrust.fragments.info.InfoItemFragment;
 import ru.dorofeev.helpforrust.fragments.purchase.PurchaseFragment;
 import ru.dorofeev.helpforrust.fragments.raidCalculator.RaidCalculatorFragment;
 import ru.dorofeev.helpforrust.fragments.raidCalculator.SubjectAdapter;
 import ru.dorofeev.helpforrust.models.Blueprint;
 import ru.dorofeev.helpforrust.models.Subject;
+import ru.dorofeev.helpforrust.models.ItemOfInfoListItem;
 
 public class MainActivity extends AppCompatActivity implements SubjectAdapter.OnSubjectClickListener,
-        BlueprintsAdapter.OnBlueprintClickListener, PurchaseFragment.RemoveAdsClickListener {
+        BlueprintsAdapter.OnBlueprintClickListener, PurchaseFragment.RemoveAdsClickListener,
+        InfoAdapter.OnInfoListItemClickListener {
 
     @BindView(R.id.fragmentContainer)
     FrameLayout fragmentContainer;
@@ -123,6 +126,13 @@ public class MainActivity extends AppCompatActivity implements SubjectAdapter.On
     private void showPurchaseFragment(){
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragmentContainer, PurchaseFragment.getInstance(this), PurchaseFragment.class.getName())
+                .commit();
+    }
+
+    private void showInfoItemFragment(List<ItemOfInfoListItem> itemOfInfoListItem){
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentContainer, InfoItemFragment.getInstance(itemOfInfoListItem), InfoItemFragment.class.getName())
+                .addToBackStack(null)
                 .commit();
     }
 
@@ -227,5 +237,10 @@ public class MainActivity extends AppCompatActivity implements SubjectAdapter.On
         YandexMetricaConfig config = YandexMetricaConfig.newConfigBuilder(API_key).build();
         YandexMetrica.activate(getApplicationContext(), config);
         YandexMetrica.enableActivityAutoTracking(getApplication());
+    }
+
+    @Override
+    public void onInfoListItemClick(List<ItemOfInfoListItem> itemOfInfoListItem) {
+        showInfoItemFragment(itemOfInfoListItem);
     }
 }

@@ -1,23 +1,23 @@
 package ru.dorofeev.helpforrust.models;
 
-public class Tea {
+public class ItemOfInfoListItem {
 
-    private String id;
+    private long id;
     private String imageUrl;
 
-    public Tea() {
+    public ItemOfInfoListItem() {
     }
 
-    public Tea(String id, String imageUrl) {
+    public ItemOfInfoListItem(long id, String imageUrl) {
         this.id = id;
         this.imageUrl = imageUrl;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

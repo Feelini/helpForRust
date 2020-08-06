@@ -13,14 +13,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ru.dorofeev.helpforrust.models.Furnace;
-import ru.dorofeev.helpforrust.models.InfoListItem;
+import ru.dorofeev.helpforrust.models.InfoList;
 
 public class InfoFragmentViewModel extends AndroidViewModel {
-    private MutableLiveData<List<InfoListItem>> infoList = new MutableLiveData<>();
+    private MutableLiveData<InfoList> infoList = new MutableLiveData<>();
     private static FirebaseDatabase database;
     private DatabaseReference databaseReference;
 
@@ -30,16 +26,12 @@ public class InfoFragmentViewModel extends AndroidViewModel {
     }
 
     public void fetchInfoList(){
-        databaseReference = database.getReference().child("Info").child("List");
+        databaseReference = database.getReference().child("Info");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<InfoListItem> infoListItems = new ArrayList<>();
                 if (dataSnapshot != null && dataSnapshot.exists()) {
-                    for (DataSnapshot dataSnapshotChild : dataSnapshot.getChildren()) {
-                        infoListItems.add(dataSnapshotChild.getValue(InfoListItem.class));
-                    }
-                    infoList.postValue(infoListItems);
+                    infoList.postValue(dataSnapshot.getValue(InfoList.class));
                 }
             }
 
@@ -50,7 +42,7 @@ public class InfoFragmentViewModel extends AndroidViewModel {
         });
     }
 
-    public LiveData<List<InfoListItem>> getInfoList(){
+    public LiveData<InfoList> getInfoList(){
         return infoList;
     }
 }

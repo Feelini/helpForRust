@@ -35,7 +35,9 @@ import ru.dorofeev.helpforrust.fragments.furnace.tabsFragments.MvkFragment;
 import ru.dorofeev.helpforrust.fragments.furnace.tabsFragments.SulfurFragment;
 import ru.dorofeev.helpforrust.fragments.purchase.PurchaseFragment;
 import ru.dorofeev.helpforrust.fragments.raidCalculator.WeaponsAdapter;
+import ru.dorofeev.helpforrust.fragments.raidCalculator.tabsFragments.OtherFragment;
 import ru.dorofeev.helpforrust.models.Furnace;
+import ru.dorofeev.helpforrust.models.InfoList;
 import ru.dorofeev.helpforrust.models.InfoListItem;
 import ru.dorofeev.helpforrust.models.RaidCalculatorListItem;
 import ru.dorofeev.helpforrust.utils.ViewModelFactory;
@@ -46,7 +48,7 @@ public class InfoFragment extends Fragment {
     @BindView(R.id.adView)
     AdView adView;
     private InfoAdapter adapter;
-    private List<InfoListItem> infoListItems;
+    private InfoList infoListData;
     private InfoFragmentViewModel viewModel;
     private Unbinder unbinder;
     private static InfoFragment instance;
@@ -76,13 +78,13 @@ public class InfoFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (infoListItems.size() == 0 ){
-            viewModel.getInfoList().observe(getViewLifecycleOwner(), infoListItems1 -> {
-                infoListItems = infoListItems1;
-                showInfoItemsList();
+        if (infoListData == null ){
+            viewModel.getInfoList().observe(getViewLifecycleOwner(), infoListData1 -> {
+                infoListData = infoListData1;
+                showInfoItemsList(infoListData);
             });
         } else {
-            showInfoItemsList();
+            showInfoItemsList(infoListData);
         }
         return inflater.inflate(R.layout.fragment_info, container, false);
     }
@@ -128,8 +130,8 @@ public class InfoFragment extends Fragment {
         viewModel.fetchInfoList();
     }
 
-    private void showInfoItemsList(List<InfoListItem> infoListItemList) {
-        adapter = new InfoAdapter(infoListItemList, getContext());
+    private void showInfoItemsList(InfoList infoListList) {
+        adapter = new InfoAdapter(infoListList, getContext());
         infoList.setAdapter(adapter);
         infoList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
     }
