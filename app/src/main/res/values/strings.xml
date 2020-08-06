@@ -37,5 +37,6 @@
     <string name="all_explored">All studied</string>
     <string name="removeAds">Advertisement is an important part of the application development. You can disable ads for support, development and comfortable use of the application. Hope for your understanding.</string>
     <string name="banner_ad_unit_id_test">ca-app-pub-9023638698585769/4984266272</string>
-<!--    <string name="banner_ad_unit_id_test">ca-app-pub-3940256099942544/6300978111</string>-->
+    <string name="info">Info</string>
+    <!--    <string name="banner_ad_unit_id_test">ca-app-pub-3940256099942544/6300978111</string>-->
 </resources>

@@ -34,6 +34,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import ru.dorofeev.helpforrust.fragments.info.InfoFragment;
 import ru.dorofeev.helpforrust.fragments.purchase.PurchaseFragment;
 import ru.dorofeev.helpforrust.fragments.raidCalculator.RaidCalculatorFragment;
 import ru.dorofeev.helpforrust.fragments.raidCalculator.SubjectAdapter;
@@ -84,6 +85,9 @@ public class MainActivity extends AppCompatActivity implements SubjectAdapter.On
                 case R.id.menu_blueprints:
                     showBlueprintsFragment();
                     break;
+                case R.id.menu_info:
+                    showInfoFragment();
+                    break;
                 case R.id.menu_purchase:
                     showPurchaseFragment();
                     break;
@@ -91,6 +95,12 @@ public class MainActivity extends AppCompatActivity implements SubjectAdapter.On
         }
         return true;
     };
+
+    private void showInfoFragment() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentContainer, InfoFragment.getInstance(), InfoFragment.class.getName())
+                .commit();
+    }
 
     private void showRaidCalculatorFragment(){
         getSupportFragmentManager().beginTransaction()

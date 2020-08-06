@@ -37,5 +37,6 @@
     <string name="all_explored">Все изучено</string>
     <string name="removeAds">Реклама является важной частью развития приложения. Для поддержки, развития и комфортного использования приложения Вы можете отключить рекламу. Надеемся на Ваше понимание.</string>
     <string name="banner_ad_unit_id_test">ca-app-pub-9023638698585769/4984266272</string>
-<!--    <string name="banner_ad_unit_id_test">ca-app-pub-3940256099942544/6300978111</string>-->
+    <string name="info">Info</string>
+    <!--    <string name="banner_ad_unit_id_test">ca-app-pub-3940256099942544/6300978111</string>-->
 </resources>

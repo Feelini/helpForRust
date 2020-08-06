@@ -16,6 +16,11 @@
         android:icon="@drawable/blueprints"
         android:title="@string/blueprints" />
     <item
+        android:id="@+id/menu_info"
+        android:enabled="true"
+        android:icon="@drawable/info"
+        android:title="@string/info" />
+    <item
         android:id="@+id/menu_purchase"
         android:enabled="true"
         android:icon="@drawable/vending_machine_icon"
